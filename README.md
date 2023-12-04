@@ -1,2 +1,2 @@
-# ISDN2001(23-24)_teamDD
+# ISDN2001(23-24) - teamDD
  for own use
