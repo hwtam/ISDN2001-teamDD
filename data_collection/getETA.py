@@ -8,7 +8,7 @@ if not(os.path.exists("list.txt")):
 print("generating detail.txt...")
 
 hketa = HKEta()
-with open("list.txt", encoding="UTF-8") as f, open("detail.txt", "w", encoding="UTF-8") as out:
+with open("list.txt", encoding="UTF-8") as f, open("ETA.txt", "w", encoding="UTF-8") as out:
   txt = f.readlines()
   for s in txt :
     s = s.rstrip()
