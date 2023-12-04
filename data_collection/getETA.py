@@ -1,4 +1,4 @@
-from hk_bus_eta import HKEta
+from hk_bus_eta import HKEta #HK Bus Crawling@2021, https://github.com/hkbus/hk-bus-crawling
 import subprocess
 import os 
 import sys
