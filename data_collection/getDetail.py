@@ -9,13 +9,16 @@ with open("list.txt", encoding="UTF-8") as f, open("detail.txt", "w", encoding="
   txt = f.readlines()
   for s in txt :
     s = s.rstrip()
-    if ("11" in s) :
-      try:
-        out.write(s)
-        etas = hketa.getEtas(route_id = s, seq=0, language="en")
-        out.write(str(etas) + "\n")
-      except Exception as e :
-        print(e)
-        out.write("error")
+    if "Choi Hung Station" in s :
+      if "11" in s :
+        try:
+          out.write(s + " : \n")
+          etas = hketa.getEtas(route_id = s, seq=0, language="en")
+          out.write(str(etas) + "\n")
+        except Exception as e :
+          print(e)
+          out.write("error" + "\n")
+        finally :
+          out.write("\n")
 
 print("ok")
