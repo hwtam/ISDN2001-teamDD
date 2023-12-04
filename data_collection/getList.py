@@ -6,9 +6,10 @@ print("generating list.txt...")
 
 hketa = HKEta()
 route_ids = list( hketa.route_list.keys() )
-with open("list.txt", "w", encoding="UTF-8") as txt :
+with open("list.txt", "w", encoding="UTF-8") as list, open("whole.txt", "w", encoding="UTF-8") as whole :
   for i in route_ids :
+    whole.write(i + "\n")
     if ("Choi Hung Station" in i) and ("11" in i) :
-      txt.write(i + "\n")
+      list.write(i + "\n")
 
 print("done")
