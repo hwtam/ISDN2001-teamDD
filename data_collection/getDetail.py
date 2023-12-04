@@ -3,7 +3,10 @@ import subprocess
 import os 
 
 os.chdir(os.path.dirname(__file__))
-subprocess.run("cls", shell=True)
+if not(os.path.exists("list.txt")):
+  subprocess.run("py getList.py", shell=True)
+print("generating detail.txt...")
+
 hketa = HKEta()
 with open("list.txt", encoding="UTF-8") as f, open("detail.txt", "w", encoding="UTF-8") as out:
   txt = f.readlines()
@@ -21,4 +24,4 @@ with open("list.txt", encoding="UTF-8") as f, open("detail.txt", "w", encoding="
         finally :
           out.write("\n")
 
-print("ok")
+print("done")
