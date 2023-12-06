@@ -12,5 +12,4 @@ class minibus {
 
 
 
-  friend void arrive(stop, minibus);
 };

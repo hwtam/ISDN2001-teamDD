@@ -8,13 +8,13 @@ using namespace std;
 
 const int MAX_TIME = 1000;  // max number of unit time , -1 for infinte max time
 const int NUM_STOP = 7;  // number of bus stop
-int num_bus = 2;
+int num_bus = 1;  // current number of buses
 
 void arrive(stop, minibus) {
 
 }
 
-minibus** moreBUS(minibus** buses) {
+minibus* moreBUS(minibus* buses) {  // to double the size of the 
   minibus** temp = new minibus*[num_bus*2];
   for (int i = 0; i < num_bus; i++) {
     temp[i] = buses[i];
@@ -26,8 +26,13 @@ minibus** moreBUS(minibus** buses) {
 }
 
 int main() {
-  minibus** buses = new minibus*[num_bus];
-  stop* stops[NUM_STOP];  // 11M have 7 stops
+  // init
+  minibus buses[num_bus];  // list to store the minibuses
+  buses[0] = minibus();
+  stop stops[NUM_STOP];  // list to store the bus stop // 11M have 7 stops
+
+
+  // simulate
   for (int time = 0; MAX_TIME == -1 | time < MAX_TIME; time++) {  // each loop = 1 unit time in reality
 
   }

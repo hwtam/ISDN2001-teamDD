@@ -18,5 +18,4 @@ class stop {
       P_off = P_off;
     }
   
-  friend void arrive(stop, minibus);
 };
