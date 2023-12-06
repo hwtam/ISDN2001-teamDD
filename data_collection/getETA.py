@@ -2,6 +2,7 @@ from hk_bus_eta import HKEta #HK Bus Crawling@2021, https://github.com/hkbus/hk-
 import subprocess
 import os 
 import sys
+import datetime
 
 if len(sys.argv) > 1:
   seq = sys.argv[1]
@@ -17,6 +18,7 @@ print("generating " + f_name + "...")
 hketa = HKEta()
 with open("list.txt", encoding="UTF-8") as f, open(f_name, "w", encoding="UTF-8") as out:
   txt = f.readlines()
+  out.write(str(datetime.datetime.now()) + "\n\n")
   for s in txt :
     s = s.rstrip()
     try:

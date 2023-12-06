@@ -9,6 +9,6 @@ old = glob.glob("ETA-*.txt")
 for f in old :
   os.remove(f)
 
-for i in range(0,3) :
+for i in range(0,7) :
   subprocess.run("py getETA.py " + str(i), shell=True)
 
