@@ -1,7 +1,0 @@
-*.txt
-.vscode/
-test/
-
-*.o
-*.exe
-*.out
