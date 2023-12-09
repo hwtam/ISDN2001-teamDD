@@ -91,7 +91,16 @@ for cell in ws["B1:O1"][0]:
   else :
     ws.column_dimensions[cell.column_letter].width = 8.5
 
-wb.save("visualization_time.xlsx")
+# loops until can save
+while True:
+  try:
+    wb.save("visualization_time.xlsx")
+  except:
+    print("Please close the excel the file")
+    input()
+    continue
+  break  
+
 wb.close()
 print("Simulation finished")
 subprocess.run("visualization_time.xlsx", shell=True)
