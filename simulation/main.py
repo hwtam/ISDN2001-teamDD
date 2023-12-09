@@ -1,28 +1,14 @@
 import minibus
 import stop
+import vis
 import random
 import os
+import openpyxl as xl
+
 
 ### const ###
 MAX_TIME = 1000
-bus_cycle = 5*60
-
-### init ###
-path = os.path.dirname(__file__)
-os.chdir(path)
-try :
-  os.remove("output.txt")
-except :
-  pass
-
-# make the bus stop (location, P_queue, P_off)
-stop.stop(0, 20, 0) # start , most ppl get in, 0 ppl get off
-stop.stop(90, 15, 20) # 2
-stop.stop(318, 10, 40) # 3
-stop.stop(366, 10, 5) # 4
-stop.stop(404, 7.5, 10) # 5
-stop.stop(488, 5, 30) # 6
-stop.stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
+bus_cycle = 7*60
 
 ### functions ###
 def getRandom(p) -> int:
@@ -41,30 +27,28 @@ def arrive(s, bus) :
   bus.ppl += on
   s.ppl -= on
 
-def vis_time(t) :
-  with open("output.txt", 'a') as f :
-    f.write(f"time =\t{t} :\n")
+### init ###
+path = os.path.dirname(__file__)
+os.chdir(path)
 
-    f.write("--- minibus ---\n")
-    for bus in minibus.minibus.l_obj :  # print minibuses
-      if (bus.end()) :
-        continue
-      i = minibus.minibus.l_obj.index(bus)
-      f.write(f"minibus\t{i} : \n")
-      f.write(f"\tlocation : {bus.position}\n")
-      f.write(f"\tamount of people : {bus.ppl}\n\n")
+# make the bus stop (location, P_queue, P_off)
+stop.stop(0, 20, 0) # start , most ppl get in, 0 ppl get off
+stop.stop(90, 15, 20) # 2
+stop.stop(318, 10, 40) # 3
+stop.stop(366, 10, 5) # 4
+stop.stop(404, 7.5, 10) # 5
+stop.stop(488, 5, 30) # 6
+stop.stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
 
-    f.write("--- minibus stop ---\n")
-    i = 1
-    for s in stop.stop.l_obj :
-      f.write(f"stop\t{i}({s.location}) : \n")
-      f.write(f"\tamount of people : {s.ppl}\n\n")
-      i += 1
-    
-    f.write("###############\n\n")
-      
+# init excel
+wb = xl.Workbook()
+l = ["time"]
+for s in stop.stop.l_obj :
+  l.append(f"stop ({s.location})")
+for i in range(stop.stop.l_location[-1]/bus_cycle +1) :
+  l.append
 
-##### main #####
+### simulation ###
 for time in range(MAX_TIME + 1) :
   # start a new bus for each bus_cycle
   if (time % bus_cycle) == 0 :
@@ -90,5 +74,10 @@ for time in range(MAX_TIME + 1) :
   for s in stop.stop.l_obj :
     s.ppl += getRandom(s.P_queue)
 
-  if (time % 30 == 0) :  # update every 30 sec
-    vis_time(time)
+  #### data visualization ####
+  vis.vis_excel(wb.active, time)
+
+# after simulation
+wb.save("visualization_time.xlsx")
+wb.close()
+print("Simulation finished")
