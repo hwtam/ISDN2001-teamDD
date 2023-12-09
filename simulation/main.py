@@ -42,11 +42,16 @@ stop.stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
 
 # init excel
 wb = xl.Workbook()
-l = ["time"]
-for s in stop.stop.l_obj :
-  l.append(f"stop ({s.location})")
-for i in range(stop.stop.l_location[-1]/bus_cycle +1) :
-  l.append
+ws = wb.active
+l = ["Time",
+     "HKUST (North Station)", "",
+     "Clear Water Bay Road", "",
+     "Shui Pin Tsuen", "",
+     "Boon Kin Village", "",
+     "Po Ning Road", "",
+     "CHUNG WA ROAD", "",
+     "Hang Hau Station"]  # https://gmb.hk/en/route/NT/11M/2
+wb.active.append(l)
 
 ### simulation ###
 for time in range(MAX_TIME + 1) :
@@ -75,9 +80,17 @@ for time in range(MAX_TIME + 1) :
     s.ppl += getRandom(s.P_queue)
 
   #### data visualization ####
-  vis.vis_excel(wb.active, time)
+  #vis.vis_excel(wb.active, time)
 
 # after simulation
+ws.column_dimensions['A'].width = 7
+for cell in ws["B1:O1"][0]:
+  if cell.value :
+    ws.column_dimensions[cell.column_letter].width = 18
+  else :
+    ws.column_dimensions[cell.column_letter].width = 6
+
+
 wb.save("visualization_time.xlsx")
 wb.close()
 print("Simulation finished")
