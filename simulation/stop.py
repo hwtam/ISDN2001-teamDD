@@ -10,3 +10,4 @@ class stop :
     self.P_off = P_off/100  # P(how many ppl get off the minibus per people in bus)%
     stop.l_obj.append(self)
     stop.l_location.append(location)
+
