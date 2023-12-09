@@ -46,5 +46,5 @@ def vis_excel(ws, t) :
       if bus.position < location :
         break
       index += 2
-    l[index] = f"Bus{minibus.minibus.l_obj.index(bus)}: " + str(bus.ppl)
+    l[index] = f"Bus{minibus.minibus.l_obj.index(bus)+1}: " + str(bus.ppl)
   ws.append(l)
