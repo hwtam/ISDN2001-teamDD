@@ -3,11 +3,12 @@ import stop
 import vis
 import random
 import os
+import subprocess
 import openpyxl as xl
 
 
 ### const ###
-MAX_TIME = 1000
+MAX_TIME = 10000
 bus_cycle = 7*60
 
 ### functions ###
@@ -80,17 +81,17 @@ for time in range(MAX_TIME + 1) :
     s.ppl += getRandom(s.P_queue)
 
   #### data visualization ####
-  #vis.vis_excel(wb.active, time)
+  vis.vis_excel(ws, time)
 
 # after simulation
-ws.column_dimensions['A'].width = 7
+ws.column_dimensions['A'].width = 5.5
 for cell in ws["B1:O1"][0]:
   if cell.value :
     ws.column_dimensions[cell.column_letter].width = 18
   else :
-    ws.column_dimensions[cell.column_letter].width = 6
-
+    ws.column_dimensions[cell.column_letter].width = 8.5
 
 wb.save("visualization_time.xlsx")
 wb.close()
 print("Simulation finished")
+subprocess.run("visualization_time.xlsx", shell=True)
