@@ -30,4 +30,6 @@ def vis_time(t) :
     f.write("###############\n\n")
 
 def vis_excel(ws, t) :
+  if (t % vis_time_cylce != 0) :
+    return
   l = []
