@@ -4,8 +4,8 @@ import random
 import os
 
 ### const ###
-MAX_TIME = 1000
-bus_cycle = 5*60
+MAX_TIME = 5000
+bus_cycle = 7*60
 
 ### init ###
 path = os.path.dirname(__file__)
@@ -61,7 +61,7 @@ def vis_time(t) :
       f.write(f"\tminibus {i} ({bus.position}) : {bus.ppl}\n")
 
     f.write("--- minibus stop ---\n")
-    i = 1
+    i = 0
     for s in stop.stop.l_obj :
       f.write(f"\tstop {i} ({s.location}) : {s.ppl}\n")
       i += 1
@@ -96,4 +96,6 @@ for time in range(MAX_TIME + 1) :
   if (time % 30 == 0) :  # update every 30 sec
     vis_time(time)
 
+if (time % 30 != 0) :
+  vis_time(MAX_TIME)
 print("\nSimulation finished")
