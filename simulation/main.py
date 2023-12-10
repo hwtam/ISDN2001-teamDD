@@ -42,7 +42,7 @@ import subprocess
 import openpyxl as xl # openpyxl
 
 ### const ###
-MAX_TIME = 10000
+MAX_TIME = 3000
 bus_cycle = 7*60
 
 ### functions ###
