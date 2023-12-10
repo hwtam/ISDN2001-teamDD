@@ -28,41 +28,44 @@ stop.stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
 def getRandom(p) -> int:
   return int(random.random() < p)
 
-def arrive(s, bus) :
-  # get off the bus first
-  off = 0
-  for i in range(bus.ppl) :
-    off += getRandom(s.P_off)  # off = (int) bus.ppl*s.P_off
-  bus.ppl -= off
-  # get on the bus
-  on = bus.capacity - bus.ppl
-  if on > s.ppl :
-    on = s.ppl
-  bus.ppl += on
-  s.ppl -= on
+def arrive(s, bus, t) :
+  with open("output.txt", 'a') as f :
+    index_bus = minibus.minibus.l_obj.index(bus)
+    index_s = stop.stop.l_obj.index(s)
+    f.write(f"##### Arrive at {t} #####\n")
+    f.write(f"--- Minibus {index_bus} arrives stop {index_s} ---\n")
+    # get off the bus first
+    f.write(f"\tMinibus {index_bus} : {bus.ppl} -> ")
+    off = 0
+    for i in range(bus.ppl) :
+      off += getRandom(s.P_off)  # off = (int) bus.ppl*s.P_off
+    bus.ppl -= off
+    # get on the bus
+    on = bus.capacity - bus.ppl
+    if on > s.ppl :
+      on = s.ppl
+    bus.ppl += on
+    f.write(f"{bus.ppl} (-{off})(+{on})\n\tStop {index_s} : {s.ppl} -> ")
+    s.ppl -= on
+    f.write(f"{s.ppl} (-{on})\n\n\n")
 
 def vis_time(t) :
   with open("output.txt", 'a') as f :
-    f.write(f"time =\t{t} :\n")
+    f.write(f"##### Time = {t} : #####\n")
 
     f.write("--- minibus ---\n")
     for bus in minibus.minibus.l_obj :  # print minibuses
       if (bus.end()) :
         continue
       i = minibus.minibus.l_obj.index(bus)
-      f.write(f"minibus\t{i} : \n")
-      f.write(f"\tlocation : {bus.position}\n")
-      f.write(f"\tamount of people : {bus.ppl}\n\n")
+      f.write(f"\tminibus {i} ({bus.position}) : {bus.ppl}\n")
 
     f.write("--- minibus stop ---\n")
     i = 1
     for s in stop.stop.l_obj :
-      f.write(f"stop\t{i}({s.location}) : \n")
-      f.write(f"\tamount of people : {s.ppl}\n\n")
+      f.write(f"\tstop {i} ({s.location}) : {s.ppl}\n")
       i += 1
-    
-    f.write("###############\n\n")
-      
+    f.write(f"\n\n")
 
 ##### main #####
 for time in range(MAX_TIME + 1) :
@@ -79,7 +82,7 @@ for time in range(MAX_TIME + 1) :
     # if the minibus arrive the stop
     if bus.position in stop.stop.l_location :  
       i = stop.stop.l_location.index(bus.position)
-      arrive(stop.stop.l_obj[i], bus)
+      arrive(stop.stop.l_obj[i], bus, time)
 
     bus.position += 1
     # the minibus ends after it arrived the last stop
@@ -92,3 +95,5 @@ for time in range(MAX_TIME + 1) :
 
   if (time % 30 == 0) :  # update every 30 sec
     vis_time(time)
+
+print("\nSimulation finished")
