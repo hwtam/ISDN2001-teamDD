@@ -46,7 +46,7 @@ MAX_TIME = 10000
 bus_cycle = 7*60
 
 ### functions ###
-def getRandom(p) -> int:
+def getRandom(p) -> int :
   return int(random.random() < p)
 
 def arrive(s, bus) :
