@@ -104,7 +104,8 @@ while running :
         minibus.minibus.l_obj = []  # clear all minibus
         for s in stop.stop.l_obj :
           s.ppl = int(s.P_queue/2)  # init all s.ppl
-        pause = False  # continues
+        pause = True  # continues
+        
         
   if pause :
     continue
