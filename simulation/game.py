@@ -27,7 +27,7 @@ stop.stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
 
 ### var ###
 font_big = pygame.font.Font(None, 60)
-font_small = pygame.font.Font(None, 16)
+font_small = pygame.font.Font(None, 36)
 screen = pygame.display.set_mode((1280, 720))
 bg = pygame.image.load("asset/bg.png")  # the background
 play = pygame.image.load("asset/play.png")
@@ -155,6 +155,10 @@ while running :
     if (bus.end()) :
       continue
     screen.blit(bus.image, bus.rec)
+    write(str(bus.ppl).zfill(2), (bus.rec.x+50, bus.rec.y+8), font_small)
+  
+  for s in stop.stop.l_obj :
+    write(str(s.ppl).zfill(2), (s.rec.x+50, s.rec.y+129), font_small)
 
 
 

@@ -19,4 +19,4 @@ def get(route_id, route_seq, stop_seq) :
   
 for i in range(1, 8):
     eta = get(2004825, 2, i)['data']['eta']
-    print(str(i) + " : " + eta[0]['timestamp'][11:-10] + " , " + eta[1]['timestamp'][11:-10] + " , " + eta[2]['timestamp'][11:-10])
+    print(str(i) + " : " + eta[0]['timestamp'][11:-6] + " , " + eta[1]['timestamp'][11:-6] + " , " + eta[2]['timestamp'][11:-6])
