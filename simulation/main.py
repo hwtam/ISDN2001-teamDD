@@ -130,11 +130,14 @@ while True:
   try:
     wb.save("visualization_time.xlsx")
   except:
-    print("Please close the excel the file")
+    print("\nPlease close the excel the file")
     input()
     continue
   break  
 
 wb.close()
+try :
+  subprocess.run("visualization_time.xlsx", shell=True, timeout=1, stderr=subprocess.DEVNULL)
+except TimeoutError :  # stop the program after 5s 
+  pass
 print("\nSimulation finished")
-subprocess.run("visualization_time.xlsx", shell=True)
