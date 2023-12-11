@@ -16,12 +16,12 @@ os.chdir(path)
 pygame.init()
 
 # init the bus stop (location, P_queue, P_off)
-stop.stop(0, 20, 0) # start , most ppl get in, 0 ppl get off
-stop.stop(90, 15, 20) # 2
-stop.stop(318, 10, 40) # 3
-stop.stop(366, 10, 5) # 4
-stop.stop(404, 7.5, 10) # 5
-stop.stop(488, 5, 30) # 6
+stop.stop(0, 35, 0) # start , most ppl get in, 0 ppl get off
+stop.stop(90, 7, 7) # 2
+stop.stop(318, 5, 20) # 3
+stop.stop(366, 5, 5) # 4
+stop.stop(404, 4, 10) # 5
+stop.stop(488, 3, 15) # 6
 stop.stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
 
 ### var ###
@@ -115,7 +115,7 @@ while running :
         for s in stop.stop.l_obj :
           s.image = pygame.image.load("asset/stop1.png")
           s.ppl = int(s.P_queue/2)  # init all s.ppl
-        pause = True  # continues
+        pause = False  # continues
              
   if pause and time != 0 :
     screen.blit(play, middle)
