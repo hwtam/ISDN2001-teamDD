@@ -1,7 +1,39 @@
+import_string = \
+'''
 import pygame
 import os
 import random
-import subprocess
+import minibus
+import stop
+'''
+### LINK START! (https://github.com/evnchn/linkstart.py)
+for line in import_string.splitlines():
+    if "import" in line:
+        print(line)
+        try:
+            exec(line)
+        except:
+            if "#" in line:
+                package_name = line.split("#")[-1]
+            else:
+                splits = line.split("import")
+                if "from" in line:
+                    package_name = splits[0].replace("from","")
+                else:
+                    package_name = splits[1]
+            package_name = package_name.strip()
+            print("Installing {}...".format(package_name))    
+            import subprocess
+            import sys
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+            try:
+                exec(line)
+            except:
+                print("Failed to install {}".format(package_name))
+### DONE
+import pygame
+import os
+import random
 import minibus
 import stop
 
@@ -171,11 +203,8 @@ while running :
     screen.blit(s.image, s.rec)
     write(str(s.ppl).zfill(2), (s.rec.x+50, s.rec.y+129), font_small)
 
-
-
-
   pygame.display.flip()
   pygame.time.wait(20 - speed)
 
-
 pygame.quit()
+print("Simulation finished")
