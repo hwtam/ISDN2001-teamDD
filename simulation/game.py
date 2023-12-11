@@ -7,7 +7,6 @@ import stop
 
 ### const ###
 MAX_TIME = -1  # -1 -> inf
-DELAY_TIME = [80, 40, 20, 10, 0]  # speed -1 = index , value = delay
 bus_cycle = 7*60
 
 ### init ###
@@ -64,6 +63,16 @@ def arrive(s, bus) :
     on = s.ppl
   bus.ppl += on
   s.ppl -= on
+  if s.ppl == 0 :
+    if s.count != 0 :
+      s.count = 0
+      s.image = pygame.image.load("asset/stop1.png")
+  else :  # still hv ppl after arrival
+    s.count += 1
+    if s.count == 1 :
+      s.image = pygame.image.load("asset/stop2.png")
+    else :
+      s.image = pygame.image.load("asset/stop3.png")
 
 ##### loop #####
 running = True
@@ -104,6 +113,7 @@ while running :
         time = 0  # reset the time
         minibus.minibus.l_obj = []  # clear all minibus
         for s in stop.stop.l_obj :
+          s.image = pygame.image.load("asset/stop1.png")
           s.ppl = int(s.P_queue/2)  # init all s.ppl
         pause = True  # continues
              
@@ -158,6 +168,7 @@ while running :
     write(str(bus.ppl).zfill(2), (bus.rec.x+50, bus.rec.y+8), font_small)
   
   for s in stop.stop.l_obj :
+    screen.blit(s.image, s.rec)
     write(str(s.ppl).zfill(2), (s.rec.x+50, s.rec.y+129), font_small)
 
 
