@@ -207,4 +207,4 @@ while running :
   pygame.time.wait(20 - speed)
 
 pygame.quit()
-print("Simulation finished")
+print("\nSimulation finished")
