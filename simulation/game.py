@@ -6,8 +6,8 @@ import minibus
 import stop
 
 ### const ###
-MAX_TIME = 3000  # -1 -> inf
-DELAY_TIME = [160, 80, 40, 20, 0]  # speed -1 = index , value = delay
+MAX_TIME = -1  # -1 -> inf
+DELAY_TIME = [80, 40, 20, 10, 0]  # speed -1 = index , value = delay
 bus_cycle = 7*60
 
 ### init ###
@@ -30,6 +30,7 @@ font_big = pygame.font.Font(None, 60)
 font_small = pygame.font.Font(None, 16)
 screen = pygame.display.set_mode((1280, 720))
 bg = pygame.image.load("asset/bg.png")  # the background
+play = pygame.image.load("asset/play.png")
 backward = pygame.Rect(505, 75, 59, 43)
 middle = pygame.Rect(575, 75, 129, 43)
 forward = pygame.Rect(717, 75, 59, 43)
@@ -45,8 +46,8 @@ def change_speed(value):
   speed += value
   if speed < 1 :
     speed = 1
-  if speed > 5 :
-    speed = 5
+  if speed > 9 :
+    speed = 9
 
 def getRandom(p) -> int :
   return int(random.random() < p)
@@ -105,9 +106,10 @@ while running :
         for s in stop.stop.l_obj :
           s.ppl = int(s.P_queue/2)  # init all s.ppl
         pause = True  # continues
-        
-        
-  if pause :
+             
+  if pause and time != 0 :
+    screen.blit(play, middle)
+    pygame.display.flip()
     continue
 
   ##### simulation #####
@@ -130,25 +132,35 @@ while running :
     if bus.position > stop.stop.l_location[-1] :
       bus.position = -1
 
-    pre = 0
-    for l in stop.stop.l_location[1:] :
-      if bus.position in range(pre, l) :
-        if (l - pre) % 170
+    # update the location of the bus rect
+    index = (bus.rec.x - 83) // 170  # current stop round down
+    if index == 6 :
+      continue
+    distance = stop.stop.l_location[index+1] - stop.stop.l_location[index]
+    diff = bus.position - stop.stop.l_location[index]
+    bus.rec.move_ip(int((index + diff / distance) * 170 + 83) - bus.rec.x, 0)
 
   for s in stop.stop.l_obj :
     # random amount of ppl get in the queue of each stop
     s.ppl += getRandom(s.P_queue)
-    
 
-
-  # update the screen
+  time += 1
+  if time % speed != 0 :
+    continue
+  # update data on the screen
   screen.blit(bg, (0,0))
   write(speed, (1150,58), font_big)
   write(str(time).zfill(5), (60,58), font_big)
+  for bus in minibus.minibus.l_obj :
+    if (bus.end()) :
+      continue
+    screen.blit(bus.image, bus.rec)
 
-  time += 1
+
+
+
   pygame.display.flip()
-  pygame.time.wait(DELAY_TIME[speed-1])
+  pygame.time.wait(20 - speed)
 
 
 pygame.quit()
