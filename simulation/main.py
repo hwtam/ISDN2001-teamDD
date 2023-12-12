@@ -1,10 +1,6 @@
 import_string = \
 '''
 import pygame
-import os
-import random
-import minibus
-import stop
 '''
 ### LINK START! (https://github.com/evnchn/linkstart.py)
 for line in import_string.splitlines():
@@ -46,6 +42,7 @@ path = os.path.dirname(__file__)
 os.chdir(path)
 
 pygame.init()
+random.seed(0)
 
 # init the bus stop (location, P_queue, P_off)
 stop.stop(0, 35, 0) # start , most ppl get in, 0 ppl get off
@@ -95,16 +92,17 @@ def arrive(s, bus) :
     on = s.ppl
   bus.ppl += on
   s.ppl -= on
+  s.change_img()
   if s.ppl == 0 :
     if s.count != 0 :
       s.count = 0
-      s.image = pygame.image.load("asset/stop1.png")
+      s.image_ppl = stop.stop.img_ppl1
   else :  # still hv ppl after arrival
     s.count += 1
     if s.count == 1 :
-      s.image = pygame.image.load("asset/stop2.png")
+      s.image_ppl = stop.stop.img_ppl2
     else :
-      s.image = pygame.image.load("asset/stop3.png")
+      s.image_ppl = stop.stop.img_ppl3
 
 ##### loop #####
 running = True
@@ -145,8 +143,9 @@ while running :
         time = 0  # reset the time
         minibus.minibus.l_obj = []  # clear all minibus
         for s in stop.stop.l_obj :
-          s.image = pygame.image.load("asset/stop1.png")
+          s.image_ppl = pygame.image.load("asset/stop_ppl1.png")
           s.ppl = int(s.P_queue/2)  # init all s.ppl
+          s.change_img()
         pause = False  # continues
              
   if pause and time != 0 :
@@ -185,6 +184,7 @@ while running :
   for s in stop.stop.l_obj :
     # random amount of ppl get in the queue of each stop
     s.ppl += getRandom(s.P_queue)
+    s.change_img()
 
   time += 1
   if time % speed != 0 :
@@ -196,11 +196,12 @@ while running :
   for bus in minibus.minibus.l_obj :
     if (bus.end()) :
       continue
-    screen.blit(bus.image, bus.rec)
+    screen.blit(minibus.minibus.image, bus.rec)
     write(str(bus.ppl).zfill(2), (bus.rec.x+50, bus.rec.y+8), font_small)
   
   for s in stop.stop.l_obj :
-    screen.blit(s.image, s.rec)
+    screen.blit(s.image, (s.rec.x, s.rec.y))
+    screen.blit(s.image_ppl, (s.rec.x, s.rec.y+123))
     write(str(s.ppl).zfill(2), (s.rec.x+50, s.rec.y+129), font_small)
 
   pygame.display.flip()
