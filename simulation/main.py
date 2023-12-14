@@ -94,7 +94,7 @@ def arrive(s, bus) :
   if on > s.ppl :
     on = s.ppl
   bus.ppl += on
-  bus.x.append(bus.ppl)
+  bus.y.append(bus.ppl)
   s.ppl -= on
   s.change_img()
   if s.ppl == 0 :
@@ -216,6 +216,15 @@ while running :
     # random amount of ppl get in the queue of each stop
     s.ppl += getRandom(s.P_queue)
     s.change_img()
+
+  if time % 25 == 0 :
+    stop.stop.times.append(time)
+    if len(stop.stop.times) > 100 :
+      stop.stop.times.pop(0)
+    for s in stop.stop.l_obj :
+      s.y.append(s.ppl)
+      if len(s.y) > 100 :
+        s.y.pop(0)
 
   time += 1
   if time % speed != 0 :

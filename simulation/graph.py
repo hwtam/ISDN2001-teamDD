@@ -45,8 +45,6 @@ class graph :
   offset_y = 0
   show = 0  # 0 = no show, 1 = showing minibus, 2 = showing stop
   rect_quit = pygame.Rect(rect.x + 410, rect.y + 10, 30, 25)
-  l_y = numpy.linspace(210, 50, 20)
-  l_x = numpy.linspace(35, 405, 7)
 
   def __init__(self) -> None:
     pass  # should not construct any instance
@@ -85,30 +83,40 @@ class graph :
 
   @staticmethod
   def draw_stop(screen, font_title, font_label) :
+    stop_x = numpy.linspace(35, 405, 100)
+    stop_y = numpy.linspace(210, 50, 20)  # max is 20
     for s in stop.stop.l_obj :
       if s.using_graph :
         i = stop.stop.l_obj.index(s)
         break
     graph.write(screen, f"Historical   data   of   {s.name[i]}", (225, 25), font_title, (00, 129, 251))
+    for i in range(10) :
+      graph.line(screen, (stop_x[i*10], 205), (stop_x[i*10], 215))
+      try :
+        graph.write(screen, stop.stop.times[i*10], (stop_x[i*10], 220), font_label, (0, 0, 0))
+      except :
+        pass
 
   @staticmethod
   def draw_bus(screen, font_title, font_label) :  # update when arrive
+    bus_y = numpy.linspace(210, 50, 20)
+    bus_x = numpy.linspace(35, 405, 7)
     # draw axises
     graph.write(screen, "Historical   data   of   last   5   minibuses", (225, 25), font_title, (00, 129, 251))
     for i in range(7) :
       if i % 2 == 0 :
-        graph.line(screen, (graph.l_x[i], 205), (graph.l_x[i], 215))
-        graph.write(screen, stop.stop.name[i], (graph.l_x[i], 223), font_label, (0, 0, 0))
+        graph.line(screen, (bus_x[i], 205), (bus_x[i], 215))
+        graph.write(screen, stop.stop.name[i], (bus_x[i], 223), font_label, (0, 0, 0))
       else :
-         graph.line(screen, (graph.l_x[i], 205), (graph.l_x[i], 225))
-         graph.write(screen, stop.stop.name[i], (graph.l_x[i], 236), font_label, (0, 0, 0))
+         graph.line(screen, (bus_x[i], 205), (bus_x[i], 225))
+         graph.write(screen, stop.stop.name[i], (bus_x[i], 236), font_label, (0, 0, 0))
     for i in range(20) :
       if (i == 19) or (i % 5 == 0) :
         if (i != 0) :
-          graph.write(screen, i, (20, graph.l_y[i]), font_label, (0, 0, 0))
-        graph.line(screen, (28, graph.l_y[i]), (44, graph.l_y[i]))
+          graph.write(screen, i, (20, bus_y[i]), font_label, (0, 0, 0))
+        graph.line(screen, (28, bus_y[i]), (44, bus_y[i]))
       else :
-         graph.line(screen, (32, graph.l_y[i]), (40, graph.l_y[i]))
+         graph.line(screen, (32, bus_y[i]), (40, bus_y[i]))
 
     # draw lines
     for bus in minibus.minibus.l_obj[-5:] :
@@ -118,8 +126,8 @@ class graph :
         color = (220,58,58)
       points = []
       i = 0
-      for x in bus.x :
-        points.append((graph.l_x[i] + graph.rect.x, graph.l_y[x] + graph.rect.y))
+      for y in bus.y :
+        points.append((bus_x[i] + graph.rect.x, bus_y[y] + graph.rect.y))
         i += 1
       if len(points) > 1 :
         pygame.draw.lines(screen, color, False, points, 5)

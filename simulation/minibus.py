@@ -17,7 +17,7 @@ class minibus :  # simplify "minibus" to "bus"
     self.position = 0  # current position of the bus
     self.capacity = capacity
     self.rec = pygame.Rect(83, 270, 100, 173)
-    self.x = []
+    self.y = []
     minibus.l_obj.append(self)
 
   def end(self) -> bool :
