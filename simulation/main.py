@@ -32,6 +32,7 @@ import os
 import random
 import minibus
 import stop
+import graph
 
 ### const ###
 MAX_TIME = -1  # -1 -> inf
@@ -42,6 +43,7 @@ path = os.path.dirname(__file__)
 os.chdir(path)
 
 pygame.init()
+pygame.display.set_caption("ISDN 2001 Team DD Simulation")
 random.seed(0)
 
 # init the bus stop (location, P_queue, P_off)
@@ -56,6 +58,8 @@ stop.stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
 ### var ###
 font_big = pygame.font.Font(None, 60)
 font_small = pygame.font.Font(None, 36)
+font_title = pygame.font.Font(None, 60)
+font_label = pygame.font.Font(None, 36)
 screen = pygame.display.set_mode((1280, 720))
 bg = pygame.image.load("asset/bg.png")  # the background
 play = pygame.image.load("asset/play.png")
@@ -121,25 +125,34 @@ while running :
       running = False
 
     # control the speed
-    if event.type == pygame.KEYDOWN :
+    elif event.type == pygame.KEYDOWN :
       if event.key == pygame.K_LEFT :
         change_speed(-1)
-      if event.key == pygame.K_RIGHT :
+      elif event.key == pygame.K_RIGHT :
         change_speed(1)
       # pause
-      if event.key == pygame.K_SPACE :
+      elif event.key == pygame.K_SPACE :
         pause = not pause
 
     # handle the buttons
-    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-      mouse_pos = event.pos
-      if backward.collidepoint(mouse_pos) :
+    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 :
+      # move graph
+      if graph.graph.show and graph.graph.rect.collidepoint(event.pos) :  # click inside the graph rect
+        if graph.graph.rect_quit.collidepoint(event.pos) :  # click the quit rect
+          graph.graph.show = 0
+        else :
+          graph.graph.is_dragging = True
+          graph.graph.offset_x = event.pos[0] - graph.graph.rect.x
+          graph.graph.offset_y = event.pos[1] - graph.graph.rect.y
+      # change speed
+      elif backward.collidepoint(event.pos) :
         change_speed(-1)
-      if middle.collidepoint(mouse_pos) :
+      elif middle.collidepoint(event.pos) :
         pause = not pause
-      if forward.collidepoint(mouse_pos) :
+      elif forward.collidepoint(event.pos) :
         change_speed(1)
-      if reset.collidepoint(mouse_pos) :
+      # reset
+      elif reset.collidepoint(event.pos) :
         time = 0  # reset the time
         minibus.minibus.l_obj = []  # clear all minibus
         for s in stop.stop.l_obj :
@@ -147,6 +160,17 @@ while running :
           s.ppl = int(s.P_queue/2)  # init all s.ppl
           s.change_img()
         pause = False  # continues
+      elif minibus.minibus.rect.collidepoint(event.pos) :
+        minibus.minibus.using_graph = True
+        graph.graph.show = 1
+    
+    # move graph
+    elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 :
+      if graph.graph.show :
+        graph.graph.is_dragging = False
+    elif event.type == pygame.MOUSEMOTION :
+      if graph.graph.show and graph.graph.is_dragging :
+        graph.graph.move(event.pos)
              
   if pause and time != 0 :
     screen.blit(play, middle)
@@ -203,6 +227,13 @@ while running :
     screen.blit(s.image, (s.rec.x, s.rec.y))
     screen.blit(s.image_ppl, (s.rec.x, s.rec.y+123))
     write(str(s.ppl).zfill(2), (s.rec.x+50, s.rec.y+129), font_small)
+
+  if graph.graph.show == 1 :
+    screen.blit(graph.graph.img, graph.graph.rect)
+    graph.graph.draw_bus(screen)
+  elif graph.graph.show == 2 :
+    screen.blit(graph.graph.img, graph.graph.rect)
+    graph.graph.draw_stop(screen)
 
   pygame.display.flip()
   pygame.time.wait(20 - speed)

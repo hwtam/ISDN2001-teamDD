@@ -7,6 +7,8 @@ os.chdir(path)
 class minibus :  # simplify "minibus" to "bus"
   
   l_obj = [] # static list to store all minibus
+  using_graph = False  # the graph of minibus is static
+  rect = pygame.Rect(83, 270, 1115, 155)  # as a button to toggle the static graph for minibus
   
   image = pygame.image.load("asset/bus.png")
 
@@ -14,7 +16,8 @@ class minibus :  # simplify "minibus" to "bus"
     self.ppl = 0  # how maany ppl inside the bus
     self.position = 0  # current position of the bus
     self.capacity = capacity
-    self.rec = pygame.Rect(83,270, 100, 173)
+    self.rec = pygame.Rect(83, 270, 100, 173)
+    self.x = []
     minibus.l_obj.append(self)
 
   def end(self) -> bool :
