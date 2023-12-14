@@ -84,13 +84,17 @@ class graph :
       s.using_graph = False
 
   @staticmethod
-  def draw_stop(screen, s, font_title, font_label) :
-    pass
+  def draw_stop(screen, font_title, font_label) :
+    for s in stop.stop.l_obj :
+      if s.using_graph :
+        i = stop.stop.l_obj.index(s)
+        break
+    graph.write(screen, f"Historical   data   of   {s.name[i]}", (225, 25), font_title, (00, 129, 251))
 
   @staticmethod
   def draw_bus(screen, font_title, font_label) :  # update when arrive
     # draw axises
-    graph.write(screen, "Historical   data   of   last   10   minibuses", (225, 25), font_title, (00, 129, 251))
+    graph.write(screen, "Historical   data   of   last   5   minibuses", (225, 25), font_title, (00, 129, 251))
     for i in range(7) :
       if i % 2 == 0 :
         graph.line(screen, (graph.l_x[i], 205), (graph.l_x[i], 215))
@@ -107,7 +111,7 @@ class graph :
          graph.line(screen, (32, graph.l_y[i]), (40, graph.l_y[i]))
 
     # draw lines
-    for bus in minibus.minibus.l_obj[-10:] :
+    for bus in minibus.minibus.l_obj[-5:] :
       if bus.end() :
         color = "black"
       else :
@@ -118,4 +122,4 @@ class graph :
         points.append((graph.l_x[i] + graph.rect.x, graph.l_y[x] + graph.rect.y))
         i += 1
       if len(points) > 1 :
-        pygame.draw.lines(screen, color, False, points, 3)
+        pygame.draw.lines(screen, color, False, points, 5)

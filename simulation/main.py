@@ -44,7 +44,7 @@ os.chdir(path)
 
 pygame.init()
 pygame.display.set_caption("ISDN 2001 Team DD Simulation")
-random.seed(0)
+random.seed(1)
 # init the bus stop (location, P_queue, P_off)
 stop.stop(0, 30, 0) # start , most ppl get in, 0 ppl get off
 stop.stop(90, 10, 10) # 2
@@ -161,8 +161,15 @@ while running :
           s.change_img()
         pause = False  # continues
       elif minibus.minibus.rect.collidepoint(event.pos) :
-        minibus.minibus.using_graph = True
         graph.graph.show = 1
+      else :
+        for s in stop.stop.l_obj :
+          if s.rec.collidepoint(event.pos) :
+            graph.graph.show = 2
+            for ss in stop.stop.l_obj :
+              ss.using_graph = False  # reset other stops' status
+            s.using_graph = True
+            break
     
     # move graph
     elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 :
@@ -236,7 +243,6 @@ while running :
     graph.graph.draw_stop(screen, font_title, font_label)
 
   pygame.display.flip()
-  update = False
   pygame.time.wait(20 - speed)
 
 pygame.quit()
