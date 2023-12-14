@@ -45,6 +45,8 @@ class graph :
   offset_y = 0
   show = 0  # 0 = no show, 1 = showing minibus, 2 = showing stop
   rect_quit = pygame.Rect(rect.x + 410, rect.y + 10, 30, 25)
+  l_y = numpy.linspace(210, 50, 20)
+  l_x = numpy.linspace(35, 405, 7)
 
   def __init__(self) -> None:
     pass  # should not construct any instance
@@ -84,13 +86,16 @@ class graph :
     pass
 
   @staticmethod
-  def draw_bus(screen, font_title, font_label) :  # update when arrive
+  def draw_bus(screen, font_title, font_label, font_even_smaller) :  # update when arrive
 
     # draw axises
     l = numpy.linspace(35, 405, 7)
     for i in range(7) :
       graph.line(screen, (l[i], 205), (l[i], 215))
-      graph.write(screen, i+1, (l[i]-2, 218), font_label, (0, 0, 0))
+      if i % 2 == 0 :
+        graph.write(screen, stop.stop.name[i], (l[i]-32, 218), font_even_smaller, (0, 0, 0))
+      else :
+         graph.write(screen, stop.stop.name[i], (l[i]-32, 228), font_even_smaller, (0, 0, 0))
     l = numpy.linspace(210, 50, 20)
     for i in range(20) :
       if (i == 19) or (i % 5 == 0) :

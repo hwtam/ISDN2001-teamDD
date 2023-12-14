@@ -4,6 +4,7 @@ class stop :
 
   l_obj = [] # a static list, storing all stop
   l_location = [] # a static list to store the times
+  name = ["HKUST (North Station)", "Clear Water Bay Road", "Shui Pin Tsuen", "Boon Kin Village", "Po Ning Road", "CHUNG WA ROAD", "Hang Hau Station"]
 
   img_stop0 = pygame.image.load("asset/stop0.png")
   img_stop1 = pygame.image.load("asset/stop1.png")

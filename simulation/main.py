@@ -60,6 +60,7 @@ font_big = pygame.font.Font(None, 60)
 font_small = pygame.font.Font(None, 36)
 font_title = pygame.font.Font(None, 36)
 font_label = pygame.font.Font(None, 15)
+font_even_smaller = pygame.font.Font(None, 13)
 screen = pygame.display.set_mode((1280, 720))
 bg = pygame.image.load("asset/bg.png")  # the background
 play = pygame.image.load("asset/play.png")
@@ -230,7 +231,7 @@ while running :
 
   if graph.graph.show == 1 :
     screen.blit(graph.graph.img, graph.graph.rect)
-    graph.graph.draw_bus(screen, font_title, font_label)
+    graph.graph.draw_bus(screen, font_title, font_label, font_even_smaller)
   elif graph.graph.show == 2 :
     screen.blit(graph.graph.img, graph.graph.rect)
     graph.graph.draw_stop(screen, font_title, font_label)
