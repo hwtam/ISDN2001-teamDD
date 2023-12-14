@@ -45,12 +45,11 @@ os.chdir(path)
 pygame.init()
 pygame.display.set_caption("ISDN 2001 Team DD Simulation")
 random.seed(0)
-
 # init the bus stop (location, P_queue, P_off)
-stop.stop(0, 35, 0) # start , most ppl get in, 0 ppl get off
-stop.stop(90, 7, 7) # 2
-stop.stop(318, 5, 20) # 3
-stop.stop(366, 5, 5) # 4
+stop.stop(0, 30, 0) # start , most ppl get in, 0 ppl get off
+stop.stop(90, 10, 10) # 2
+stop.stop(318, 7, 20) # 3
+stop.stop(366, 5, 7) # 4
 stop.stop(404, 4, 10) # 5
 stop.stop(488, 3, 15) # 6
 stop.stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
@@ -58,9 +57,8 @@ stop.stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
 ### var ###
 font_big = pygame.font.Font(None, 60)
 font_small = pygame.font.Font(None, 36)
-font_title = pygame.font.Font(None, 36)
+font_title = pygame.font.Font(None, 24)
 font_label = pygame.font.Font(None, 15)
-font_even_smaller = pygame.font.Font(None, 13)
 screen = pygame.display.set_mode((1280, 720))
 bg = pygame.image.load("asset/bg.png")  # the background
 play = pygame.image.load("asset/play.png")
@@ -96,6 +94,7 @@ def arrive(s, bus) :
   if on > s.ppl :
     on = s.ppl
   bus.ppl += on
+  bus.x.append(bus.ppl)
   s.ppl -= on
   s.change_img()
   if s.ppl == 0 :
@@ -230,13 +229,14 @@ while running :
     write(str(s.ppl).zfill(2), (s.rec.x+50, s.rec.y+129), font_small)
 
   if graph.graph.show == 1 :
-    screen.blit(graph.graph.img, graph.graph.rect)
-    graph.graph.draw_bus(screen, font_title, font_label, font_even_smaller)
+      screen.blit(graph.graph.img, graph.graph.rect)
+      graph.graph.draw_bus(screen, font_title, font_label)
   elif graph.graph.show == 2 :
     screen.blit(graph.graph.img, graph.graph.rect)
     graph.graph.draw_stop(screen, font_title, font_label)
 
   pygame.display.flip()
+  update = False
   pygame.time.wait(20 - speed)
 
 pygame.quit()
