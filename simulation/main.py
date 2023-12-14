@@ -58,8 +58,8 @@ stop.stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
 ### var ###
 font_big = pygame.font.Font(None, 60)
 font_small = pygame.font.Font(None, 36)
-font_title = pygame.font.Font(None, 60)
-font_label = pygame.font.Font(None, 36)
+font_title = pygame.font.Font(None, 36)
+font_label = pygame.font.Font(None, 15)
 screen = pygame.display.set_mode((1280, 720))
 bg = pygame.image.load("asset/bg.png")  # the background
 play = pygame.image.load("asset/play.png")
@@ -230,10 +230,10 @@ while running :
 
   if graph.graph.show == 1 :
     screen.blit(graph.graph.img, graph.graph.rect)
-    graph.graph.draw_bus(screen)
+    graph.graph.draw_bus(screen, font_title, font_label)
   elif graph.graph.show == 2 :
     screen.blit(graph.graph.img, graph.graph.rect)
-    graph.graph.draw_stop(screen)
+    graph.graph.draw_stop(screen, font_title, font_label)
 
   pygame.display.flip()
   pygame.time.wait(20 - speed)

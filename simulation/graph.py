@@ -1,4 +1,36 @@
+import_string = \
+'''
 import pygame
+import numpy
+'''
+### LINK START! (https://github.com/evnchn/linkstart.py)
+for line in import_string.splitlines():
+    if "import" in line:
+        print(line)
+        try:
+            exec(line)
+        except:
+            if "#" in line:
+                package_name = line.split("#")[-1]
+            else:
+                splits = line.split("import")
+                if "from" in line:
+                    package_name = splits[0].replace("from","")
+                else:
+                    package_name = splits[1]
+            package_name = package_name.strip()
+            print("Installing {}...".format(package_name))    
+            import subprocess
+            import sys
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+            try:
+                exec(line)
+            except:
+                print("Failed to install {}".format(package_name))
+### DONE
+
+import pygame
+import numpy
 import minibus
 import stop
 
@@ -7,6 +39,7 @@ class graph :
   # static memeber, such that there is only 1 graph on screen
   img = pygame.image.load("asset/graph.png")
   rect = img.get_rect()
+  rect.topleft = (415, 235)
   is_dragging = False
   offset_x = 0
   offset_y = 0
@@ -31,8 +64,8 @@ class graph :
     graph.rect_quit.update(graph.rect.x + 410, graph.rect.y + 10, 30, 25)
 
   @staticmethod
-  def write(screen, string, location, f) :  # to print string on the screen
-    text = f.render(str(string), True, (255, 255, 255))
+  def write(screen, string, location, f, color = (255, 255, 255)) :  # to print string on the screen
+    text = f.render(str(string), True, color)
     screen.blit(text, (location[0] + graph.rect.x, location[1] + graph.rect.y))
 
   def line(screen, start, end, color = "black", w = 1) :
@@ -47,15 +80,25 @@ class graph :
       s.using_graph = False
 
   @staticmethod
-  def draw_stop(screen, s) :
+  def draw_stop(screen, s, font_title, font_label) :
     pass
 
   @staticmethod
-  def draw_bus(screen) :
+  def draw_bus(screen, font_title, font_label) :  # update when arrive
 
     # draw axises
+    l = numpy.linspace(35, 405, 7)
     for i in range(7) :
-      graph.line(screen, (45 + i*60, 205), (45 + i*60, 215))
+      graph.line(screen, (l[i], 205), (l[i], 215))
+      graph.write(screen, i+1, (l[i]-2, 218), font_label, (0, 0, 0))
+    l = numpy.linspace(210, 50, 20)
+    for i in range(20) :
+      if (i == 19) or (i % 5 == 0) :
+        graph.write(screen, str(i).zfill(2), (18, l[i]-4), font_label, (0, 0, 0))
+        graph.line(screen, (31, l[i]), (41, l[i]))
+      else :
+         graph.line(screen, (33, l[i]), (39, l[i]))
+         
     
 
     # draw lines
