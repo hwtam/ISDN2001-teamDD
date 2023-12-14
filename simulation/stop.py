@@ -30,7 +30,7 @@ class stop :
       self.image = stop.img_stop0
     elif self.ppl < 5 :
       self.image = stop.img_stop1
-    elif self.ppl < 9 :
+    elif self.ppl < 10 :
       self.image = stop.img_stop2
-    elif self.ppl < 15 :
+    else :
       self.image = stop.img_stop3

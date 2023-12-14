@@ -107,7 +107,7 @@ def arrive(s, bus) :
 ##### loop #####
 running = True
 time = 0
-speed = 3
+speed = 7
 pause = False
 while running :
 
