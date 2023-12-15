@@ -83,19 +83,25 @@ class graph :
 
   @staticmethod
   def draw_stop(screen, font_title, font_label) :
-    stop_x = numpy.linspace(35, 405, 100)
-    stop_y = numpy.linspace(210, 50, 20)  # max is 20
+    stop_x = numpy.linspace(35, 405, 10)
+    stop_y = numpy.linspace(210, 50, 31)  # max is 30
     for s in stop.stop.l_obj :
       if s.using_graph :
         i = stop.stop.l_obj.index(s)
         break
     graph.write(screen, f"Historical   data   of   {s.name[i]}", (225, 25), font_title, (00, 129, 251))
     for i in range(10) :
-      graph.line(screen, (stop_x[i*10], 205), (stop_x[i*10], 215))
+      graph.line(screen, (stop_x[i], 205), (stop_x[i], 215))
       try :
-        graph.write(screen, stop.stop.times[i*10], (stop_x[i*10], 220), font_label, (0, 0, 0))
+        graph.write(screen, stop.stop.times[i*10], (stop_x[i], 220), font_label, (0, 0, 0))
       except :
         pass
+    for i in range(31) :
+      if i % 5 == 0 :
+        if (i != 0) :
+          graph.write(screen, i, (20, stop_y[i]), font_label, (0, 0, 0))
+        graph.line(screen, (28, stop_y[i]), (44, stop_y[i]))
+       
 
   @staticmethod
   def draw_bus(screen, font_title, font_label) :  # update when arrive
