@@ -161,6 +161,7 @@ while running :
           s.y = []
           s.ppl = int(s.P_queue*500)  # init all s.ppl
           s.change_img()
+        random.seed(0)
         pause = False  # continues
       elif minibus.minibus.rect.collidepoint(event.pos) :
         graph.graph.show = 1
