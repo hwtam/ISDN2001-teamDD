@@ -44,7 +44,7 @@ os.chdir(path)
 
 pygame.init()
 pygame.display.set_caption("ISDN 2001 Team DD Simulation")
-random.seed(1)
+random.seed(0)
 # init the bus stop (location, P_queue, P_off)
 stop.stop(0, 30, 0) # start , most ppl get in, 0 ppl get off
 stop.stop(90, 10, 10) # 2
@@ -155,9 +155,11 @@ while running :
       elif reset.collidepoint(event.pos) :
         time = 0  # reset the time
         minibus.minibus.l_obj = []  # clear all minibus
+        stop.stop.times = []
         for s in stop.stop.l_obj :
           s.image_ppl = pygame.image.load("asset/stop_ppl1.png")
-          s.ppl = int(s.P_queue/2)  # init all s.ppl
+          s.y = []
+          s.ppl = int(s.P_queue*500)  # init all s.ppl
           s.change_img()
         pause = False  # continues
       elif minibus.minibus.rect.collidepoint(event.pos) :
@@ -219,11 +221,11 @@ while running :
 
   if time % 25 == 0 :
     stop.stop.times.append(time)
-    if len(stop.stop.times) > 100 :
+    if len(stop.stop.times) > 101 :
       stop.stop.times.pop(0)
     for s in stop.stop.l_obj :
       s.y.append(s.ppl)
-      if len(s.y) > 100 :
+      if len(s.y) > 101 :
         s.y.pop(0)
 
   time += 1
