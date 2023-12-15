@@ -46,12 +46,12 @@ pygame.init()
 pygame.display.set_caption("ISDN 2001 Team DD Simulation")
 random.seed(0)
 # init the bus stop (location, P_queue, P_off)
-stop.stop(0, 30, 0) # start , most ppl get in, 0 ppl get off
-stop.stop(90, 10, 10) # 2
-stop.stop(318, 7, 20) # 3
-stop.stop(366, 5, 7) # 4
-stop.stop(404, 4, 10) # 5
-stop.stop(488, 3, 15) # 6
+stop.stop(0, 35, 0) # start , most ppl get in, 0 ppl get off
+stop.stop(90, 12, 10) # 2
+stop.stop(318, 10, 20) # 3
+stop.stop(366, 6, 15) # 4
+stop.stop(404, 5, 20) # 5
+stop.stop(488, 4, 15) # 6
 stop.stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
 
 ### var ###
@@ -107,11 +107,35 @@ def arrive(s, bus) :
       s.image_ppl = stop.stop.img_ppl2
     else :
       s.image_ppl = stop.stop.img_ppl3
+  
+def update() :
+  # update data on the screen
+  screen.blit(bg, (0,0))
+  write(speed, (1150,58), font_big)
+  write(str(time).zfill(5), (60,58), font_big)
+  for bus in minibus.minibus.l_obj :
+    if (bus.end()) :
+      continue
+    screen.blit(minibus.minibus.image, bus.rec)
+    write(str(bus.ppl).zfill(2), (bus.rec.x+50, bus.rec.y+8), font_small)
+  
+  for s in stop.stop.l_obj :
+    screen.blit(s.image, (s.rec.x, s.rec.y))
+    screen.blit(s.image_ppl, (s.rec.x, s.rec.y+123))
+    write(str(s.ppl).zfill(2), (s.rec.x+50, s.rec.y+129), font_small)
+
+def update_graph() :
+  if graph.graph.show == 1 :
+      screen.blit(graph.graph.img, graph.graph.rect)
+      graph.graph.draw_bus(screen, font_title, font_label)
+  elif graph.graph.show == 2 :
+    screen.blit(graph.graph.img, graph.graph.rect)
+    graph.graph.draw_stop(screen, font_title, font_label)
 
 ##### loop #####
 running = True
 time = 0
-speed = 7
+speed = 3
 pause = False
 while running :
 
@@ -159,6 +183,7 @@ while running :
         for s in stop.stop.l_obj :
           s.image_ppl = pygame.image.load("asset/stop_ppl1.png")
           s.y = []
+          s.count = 0
           s.ppl = int(s.P_queue*500)  # init all s.ppl
           s.change_img()
         random.seed(0)
@@ -183,7 +208,9 @@ while running :
         graph.graph.move(event.pos)
              
   if pause and time != 0 :
+    update()
     screen.blit(play, middle)
+    update_graph()
     pygame.display.flip()
     continue
 
@@ -230,32 +257,11 @@ while running :
         s.y.pop(0)
 
   time += 1
-  if time % speed != 0 :
-    continue
-  # update data on the screen
-  screen.blit(bg, (0,0))
-  write(speed, (1150,58), font_big)
-  write(str(time).zfill(5), (60,58), font_big)
-  for bus in minibus.minibus.l_obj :
-    if (bus.end()) :
-      continue
-    screen.blit(minibus.minibus.image, bus.rec)
-    write(str(bus.ppl).zfill(2), (bus.rec.x+50, bus.rec.y+8), font_small)
-  
-  for s in stop.stop.l_obj :
-    screen.blit(s.image, (s.rec.x, s.rec.y))
-    screen.blit(s.image_ppl, (s.rec.x, s.rec.y+123))
-    write(str(s.ppl).zfill(2), (s.rec.x+50, s.rec.y+129), font_small)
-
-  if graph.graph.show == 1 :
-      screen.blit(graph.graph.img, graph.graph.rect)
-      graph.graph.draw_bus(screen, font_title, font_label)
-  elif graph.graph.show == 2 :
-    screen.blit(graph.graph.img, graph.graph.rect)
-    graph.graph.draw_stop(screen, font_title, font_label)
-
-  pygame.display.flip()
-  pygame.time.wait(20 - speed)
+  if time % speed == 0 :
+    update()
+    update_graph()
+    pygame.display.flip()
+    pygame.time.wait(20 - speed)
 
 pygame.quit()
 print("\nSimulation finished")
