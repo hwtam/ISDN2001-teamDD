@@ -119,7 +119,7 @@ class graph :
     bus_y = numpy.linspace(210, 50, 20)
     bus_x = numpy.linspace(35, 405, 7)
     # draw axises
-    graph.write(screen, "Historical   data   of   last   5   minibuses", (225, 25), font_title, (00, 129, 251))
+    graph.write(screen, "Historical   data   of   latest   5   minibuses", (225, 25), font_title, (00, 129, 251))
     for i in range(7) :
       if i % 2 == 0 :
         graph.line(screen, (bus_x[i], 205), (bus_x[i], 215))
