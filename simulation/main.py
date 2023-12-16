@@ -136,7 +136,7 @@ def update_graph() :
 running = True
 time = 0
 speed = 3
-pause = False
+pause = True
 while running :
 
   # when to stop
