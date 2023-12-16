@@ -18,6 +18,6 @@ it outputs to `visualization_time.xlsx`. It is for showing the numberic data.
 
 it outputs in pygame. It is for demo.
 
-### [Current Version](https://github.com/hwtam/ISDN2001-teamDD/tree/simulation_v5) :
+## [Current Version](https://github.com/hwtam/ISDN2001-teamDD/tree/simulation_v5) :
 
 it outputs in pygame. It is an updated version of v3.
