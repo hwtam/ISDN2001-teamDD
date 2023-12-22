@@ -6,7 +6,6 @@
 - deciding the topic
 
 21/09
-- everyone sent their timetable
 - divide into 2 subteams to do the market research :<br>
   - Fast commuting : Tom, Jimmy, Ziyi<br>
   - Transport hygiene : Brandon, Dan, Matt, Jimmy
@@ -49,7 +48,11 @@
 - basic planning of division of labor
 
 23/11
-- basic planning of what to do for the 2001 final presentation(Decide camera to buy, Confirm details of bus rental for experiment, Sort out all options for human detection model, Mini-minibus stimulation)
+- basic planning of what to do for the 2001 final presentation
+  - Decide camera to buy
+  - Confirm details of bus rental for experiment
+  - Sort out all options for human detection model
+  - Mini-minibus stimulation
 
 24/11
 - go to "Location matters" event
@@ -65,12 +68,15 @@
 
 15/12
 - start doing the ppt for conceptual design review
-- Ziyi record video at North gate in ust for testing the people counting
+- Ziyi record video at North gate in ust for testing the people counting algorithm/software
+
+16/12
+- presentation
 
 22/12
 - make the [design log](https://github.com/hwtam/ISDN2001-teamDD/blob/simulation_v5/others/log.md)
 
-<br><hr><hr><br>
+<br><hr><br>
 
 ## Simulation prototype log
 27/11
@@ -100,3 +106,12 @@
 15/12
 - Done v4(merged into v5), the color of stop/people count changes in different states to help visualize  the data
 - Done [v5](https://github.com/hwtam/ISDN2001-teamDD/tree/simulation_v5)(the current version), based on v4 but with an even better interaction design, able to click on minibus/stop to show a graph for visualizing the data
+
+<br><hr><br>
+I want to focus on prediction
+- Predict when will the passenger get on the minibus
+- Suggest which transportation to take for the passenger
+
+Possible direction
+- designing algorithm to predict the traffic and for the suggestion
+- make use of AI model to predict the traffic based on historic data and for the suggestion
