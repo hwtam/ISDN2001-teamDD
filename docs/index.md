@@ -1,4 +1,4 @@
-# Individual Design Log - by Tom
+# [Individual Design Log - by Tom](https://hwtam.github.io/ISDN2001-teamDD/)
 
 ## Team log
 19/09
