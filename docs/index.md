@@ -81,6 +81,8 @@
 <br>
 
 ## Simulation prototype log
+### [Github commit log here](https://github.com/hwtam/ISDN2001-teamDD/commits)
+
 27/11
 - make a [model](https://www.canva.com/design/DAF1U-2nVa4/tthAYAMsnmWHyW39IpZPLQ/edit) to sort out the relationship of different parameters of the simulation
 
