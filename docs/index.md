@@ -74,9 +74,11 @@
 - presentation
 
 22/12
-- make the [design log](https://github.com/hwtam/ISDN2001-teamDD/blob/simulation_v5/others/log.md)
+- make the [design log](https://github.com/hwtam/ISDN2001-teamDD/blob/simulation_v5/docs/index.md)
 
-<br> <hr> <br>
+<br>
+<hr>
+<br>
 
 ## Simulation prototype log
 27/11
@@ -87,18 +89,21 @@
 
 06/12
 - basic planning for the simulation prototype(Jimmy&Tom)
-- Jimmy and I done the code for getting the ETA of minibus
+- Jimmy and I done the [code for getting the ETA of minibus](https://github.com/hwtam/ISDN2001-teamDD/blob/simulation_v5/data_collection/eta.py)
 
 07/12
 - Used the ETA of 11M to predict the time needed to arrival each stop
+![eta.png](eta.png)
 
 09/12
 - Done [v1](https://github.com/hwtam/ISDN2001-teamDD/tree/simulation_v1), to show the simulation process in terminal, for testing purpose
 - Done the basic simulation algorithm
 - Done [v2](https://github.com/hwtam/ISDN2001-teamDD/tree/simulation_v2), to store the simulation process data to a excel file, for manually generating graph in excel to visualize  the data
+![excel.png](excel.png)
 
 10/12
 - Matt designed the UI for the simulation
+![UI.jpg](UI.jpg)
 
 13/12
 - Done [v3](https://github.com/hwtam/ISDN2001-teamDD/tree/simulation_v3), to visualize  the simulation using pygame for a better GUI and interaction, for demo purpose
@@ -107,7 +112,9 @@
 - Done v4(merged into v5), the color of stop/people count changes in different states to help visualize  the data
 - Done [v5](https://github.com/hwtam/ISDN2001-teamDD/tree/simulation_v5)(the current version), based on v4 but with an even better interaction design, able to click on minibus/stop to show a graph for visualizing the data
 
-<br> <hr> <br>
+<br>
+<hr>
+<br>
 
 I want to focus on prediction
 - Predict when will the passenger get on the minibus
