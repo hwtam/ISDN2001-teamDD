@@ -33,9 +33,8 @@ for line in import_string.splitlines():
             except:
                 print("Failed to install {}".format(package_name))
 ### DONE
-import minibus
-import stop
-import vis
+from elements import *  # self-define
+import vis  # self-define
 import random
 import os
 import subprocess

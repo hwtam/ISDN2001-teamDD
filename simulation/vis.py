@@ -4,7 +4,7 @@ import stop
 ### const ###
 vis_time_cylce = 30
 
-def vis_excel(ws, t) :
+def vis_excel(ws, t) :  # add a row
   if (t % vis_time_cylce != 0) :
     return
   l = [t]
