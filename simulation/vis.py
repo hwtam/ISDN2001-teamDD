@@ -1,5 +1,4 @@
-import minibus
-import stop
+import elements
 
 ### const ###
 vis_time_cylce = 30
