@@ -1,24 +1,32 @@
 import random
 
+### const ###
+bus_cycle = 7*60
+
 ### functions ###
 def getRandom(p) -> int :
   return int(random.random() < (p / 100))  # 0 / 1
 
-def arrive(stop, bus) :
-  # get off the bus first
-  off = 0
-  for i in range(bus.ppl) :
-    off += getRandom(stop.P_off)
-  bus.ppl -= off
-  # get on the bus
-  on = bus.capacity - bus.ppl
-  if on > len(stop.user_list) :
-    on = len(stop.user_list)
-  bus.ppl += on
-  s.ppl -= on
+def loop(t) :
+  if (t % bus_cycle == 0) :  # start a new bus for each bus_cycle
+    bus()
+
+  for s in stop.list_obj :  # handle bus stops
+    s.renege()
+    s.enqueue(t)
+  
+  for minibus in bus.list_obj :  # handle buses
+    if (minibus.end()) :
+      continue
+    if minibus.position in stop.list_location :  # if bus at bus stop
+      i = stop.list_location.index(minibus.position)
+      minibus.arrive(stop.list_obj[i])
+    minibus.position += 1
+    if minibus.position > stop.list_location[-1] :
+      minibus.position = -1
 
 ### classes ###
-class bus :  # simplify "minibus" to "bus" for all the comments
+class bus :  # simplify "minibus" to "bus"
 
   list_obj = [] # static list to store all minibus
 
@@ -27,6 +35,18 @@ class bus :  # simplify "minibus" to "bus" for all the comments
     self.position = 0  # current position of the bus
     self.capacity = capacity
     bus.list_obj.append(self)
+
+  def arrive(self, stop) :
+    off = 0
+    for i in range(self.ppl) :
+      off += getRandom(stop.P_off)
+    self.ppl -= off
+    on = self.capacity - self.ppl
+    if on > len(stop.user_list) :
+      on = len(stop.user_list)
+    self.ppl += on
+    for i in range(on) :
+      stop.dequeue()
 
   def end(self) -> bool:
     return (self.position == -1)  # postion = -1 to indicate the minibus arrived the ending of the route
@@ -42,8 +62,6 @@ class stop :
     self.P_queue = P_queue/10  # P(how many ppl get in the queue per time)/1000
     self.P_off = P_off  # P(how many ppl get off the minibus per people in bus)/100
     self.user_list = []  # a list to store the people waiting at the queue
-    for i in range(int(P_queue/2)) :  # init value of people waiting
-      self.user_list.append(user(len(stop.list_obj), 0))
     stop.list_obj.append(self)
     stop.list_location.append(location)
 
@@ -71,9 +89,6 @@ class stop :
       for user in self.user_list :
         user.waiting_time += 1
 
-      
-
-
 class user :
 
   list_obj = []  # to store all users (include "got off the bus", "on the bus", "waiting the bus", "renege")
@@ -82,3 +97,4 @@ class user :
     self.stop = stop  # belongs to which bus stop, the index of the stop
     self.enqueue_time = t
     self.waiting_time = 0
+    user.list_obj.append(self)
