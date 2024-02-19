@@ -1,11 +1,6 @@
 import_string = \
 '''
-import minibus
-import stop
-import vis
-import random
-import os
-import subprocess
+
 import openpyxl as xl # openpyxl
 '''
 ### LINK START! (https://github.com/evnchn/linkstart.py)
@@ -35,31 +30,9 @@ for line in import_string.splitlines():
 ### DONE
 from elements import *  # self-define
 import vis  # self-define
-import random
 import os
 import subprocess
 import openpyxl as xl # openpyxl
-
-### const ###
-MAX_TIME = 3000
-bus_cycle = 7*60
-
-### functions ###
-def getRandom(p) -> int:
-  return int(random.random() < p)
-
-def arrive(s, bus) :
-  # get off the bus first
-  off = 0
-  for i in range(bus.ppl) :
-    off += getRandom(s.P_off)  # off = (int) bus.ppl*s.P_off
-  bus.ppl -= off
-  # get on the bus
-  on = bus.capacity - bus.ppl
-  if on > s.ppl :
-    on = s.ppl
-  bus.ppl += on
-  s.ppl -= on
 
 ### init ###
 path = os.path.dirname(__file__)
