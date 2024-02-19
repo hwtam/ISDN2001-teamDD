@@ -1,5 +1,4 @@
 import random
-import vis
 
 ### const ###
 BUS_CYCLE = 7*60
