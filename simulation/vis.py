@@ -24,10 +24,6 @@ def des_excel(wb) :
   timestamp = datetime.now().strftime("%m%d-%H%M%S")
   wb.save(f"excel/{timestamp}.xlsx")
   wb.close()
-  try :
-    subprocess.run("visualization_time.xlsx", shell=True, timeout=1, stderr=subprocess.DEVNULL)
-  except TimeoutError :  # stop the program after 5s 
-    pass
 
 def to_excel_ppl(wb, t) :  # add data to excel
   for stop in Stop.list_obj[:-1] :
@@ -40,4 +36,5 @@ def to_excel_ppl(wb, t) :  # add data to excel
 
 def to_excel_waiting(wb) :
   for user in User.list_obj :
-    ws = wb[str(Stop.list_obj.index(user.stop))]
+    ws = wb[str(user.stop)]
+    ws.cell(row = user.enqueue_time + 2, column = 4).value = user.waiting_time

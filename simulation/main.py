@@ -5,7 +5,7 @@ import openpyxl as xl # openpyxl
 ### LINK START! (https://github.com/evnchn/linkstart.py)
 for line in import_string.splitlines():
     if "import" in line:
-        print(line)
+        #print(line)
         try:
             exec(line)
         except:
@@ -53,5 +53,6 @@ for time in range(MAX_TIME + 1) :
   loop(time)
   vis.to_excel_ppl(wb, time)
 
+vis.to_excel_waiting(wb)
 vis.des_excel(wb)
 print("\nSimulation finished")

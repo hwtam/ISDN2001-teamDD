@@ -83,7 +83,7 @@ class Stop :
 
   def enqueue(self, t) -> int :  # enqueue with given P
     if (getRandom(self.P_queue)) :
-      self.user_list.append(User(len(Stop.list_obj), t))
+      self.user_list.append(User(Stop.list_obj.index(self), t))
       return 1
     return 0
   
