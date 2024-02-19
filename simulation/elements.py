@@ -1,8 +1,9 @@
 import random
+import vis
 
 ### const ###
 BUS_CYCLE = 7*60
-MAX_TIME = 5000
+MAX_TIME = 9000
 
 ### functions ###
 def getRandom(p) -> int :
@@ -53,13 +54,13 @@ class Bus :  # simplify "minibus" to "bus"
     self.ppl += on
     for i in range(on) :
       stop.dequeue()
-    stop.current_on = 0
+    stop.current_on = on
     return on
 
-  def get_off(self) -> int :
+  def get_off(self, stop) -> int :
     off = 0
     for i in range(self.ppl) :
-      off += getRandom(Stop.P_off)
+      off += getRandom(stop.P_off)
     self.ppl -= off
     return off
 
@@ -81,29 +82,31 @@ class Stop :
     Stop.list_obj.append(self)
     Stop.list_location.append(location)
 
-    def enqueue(self, t) -> int :  # enqueue with given P
-      if (getRandom(self.P_queue)) :
-        self.user_list.append(User(len(Stop.list_obj), t))
-        return 1
-      return 0
-    
-    def renege(self) -> int :  # dequeue without getting on the bus
-      count = 0
-      if (Stop.P_leave > 0) :
-        for person in self.user_list :
-          if (getRandom(Stop.P_leave)) :
-            count += 1
-            dequeue(person)
-      return count
-    
-    def dequeue(self, person = None) -> None :  # dequeue
-      if (person == None) :
-        person = self.user_list[0]  # remove the first person if not specified
-      self.user_list.pop(person)
+  def enqueue(self, t) -> int :  # enqueue with given P
+    if (getRandom(self.P_queue)) :
+      self.user_list.append(User(len(Stop.list_obj), t))
+      return 1
+    return 0
+  
+  def renege(self) -> int :  # dequeue without getting on the bus
+    count = 0
+    if (Stop.P_leave > 0) :
+      for person in self.user_list :
+        if (getRandom(Stop.P_leave)) :
+          count += 1
+          self.dequeue(person)
+    return count
+  
+  def dequeue(self, person = None) -> None :  # dequeue
+    if (person == None) :
+      self.user_list.pop(0)  # remove the first person if not specified
+      return
+    self.user_list.remove(person)
+    User.list_obj.remove(person)  # remove the person from the system
 
-    def update_waiting_time(self) -> None :
-      for user in self.user_list :
-        user.waiting_time += 1
+  def update_waiting_time(self) -> None :
+    for user in self.user_list :
+      user.waiting_time += 1
 
 class User :
 
