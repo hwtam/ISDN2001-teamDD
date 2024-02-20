@@ -1,7 +1,7 @@
 from elements import *
 import openpyxl as xl # openpyxl
 from datetime import datetime
-import subprocess
+import os
 
 ### const ###
 
@@ -22,6 +22,10 @@ def con_excel() :
 
 def des_excel(wb) :
   timestamp = datetime.now().strftime("%m%d-%H%M%S")
+  try :
+    os.mkdir("excel")
+  except :
+    pass
   wb.save(f"excel/{timestamp}.xlsx")
   wb.close()
 
@@ -38,3 +42,7 @@ def to_excel_waiting(wb) :
   for user in User.list_obj :
     ws = wb[str(user.stop)]
     ws.cell(row = user.enqueue_time + 2, column = 4).value = user.waiting_time
+  for stop in Stop.list_obj[:-1] :  # remove waiting time of all the users that are still waiting at the queue
+    ws = wb[str(Stop.list_obj.index(stop))]
+    for user in stop.user_list :
+      ws.cell(row = user.enqueue_time + 2, column = 4).value = None
