@@ -21,12 +21,14 @@ def loop(t) :
       if (t % BUS_CYCLE == 0) or (bus.ppl == bus.capacity) :  # if full or next bus arrive
         bus.position = 1  # start moving
         Stop.list_obj[0].leave_time_list.append(t)
+        Stop.list_obj[0].update_waiting_num_bus()
       continue
     elif bus.position in Stop.list_location[1:] :  # if bus at bus stop
       i = Stop.list_location.index(bus.position)
       bus.get_off(Stop.list_obj[i])
       bus.get_on(Stop.list_obj[i])
       Stop.list_obj[i].leave_time_list.append(t)
+      Stop.list_obj[i].update_waiting_num_bus()
 
     bus.position += 1  # move, for every bus
     if bus.position > Stop.list_location[-1] :  # after arrive last stop
@@ -110,6 +112,10 @@ class Stop :
     for user in self.user_list :
       user.waiting_time += 1
 
+  def update_waiting_num_bus(self) -> None :
+    for user in self.user_list :
+      user.waiting_num_bus += 1
+
 class User :
 
   list_obj = []  # to store all users (include "got off the bus", "on the bus", "waiting the bus", "renege")
@@ -118,4 +124,5 @@ class User :
     self.stop = stop  # belongs to which bus stop, the index of the stop
     self.enqueue_time = t
     self.waiting_time = 0
+    self.waiting_num_bus = 1  # 1 = able to get on the next bus
     User.list_obj.append(self)

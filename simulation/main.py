@@ -32,7 +32,6 @@ from elements import *  # self-define
 import vis  # self-define
 import os
 import subprocess
-import openpyxl as xl # openpyxl
 
 ### init ###
 path = os.path.dirname(__file__)

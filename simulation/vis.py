@@ -43,6 +43,7 @@ def to_excel_waiting(wb) :
   for user in User.list_obj :
     ws = wb[str(user.stop)]
     ws.cell(row = user.enqueue_time + 2, column = 4).value = user.waiting_time
+    # ws.cell(row = user.enqueue_time + 2, column = 4).value = user.waiting_num_bus
   for stop in Stop.list_obj[:-1] :  # remove waiting time of all the users that are still waiting at the queue
     ws = wb[str(Stop.list_obj.index(stop))]
     for user in stop.user_list :
@@ -56,20 +57,24 @@ def plt_waiting_time() :
     index = Stop.list_obj.index(stop)
     x = []
     y = []
+    z = []
     ax = axes[index]
     for user in User.list_obj :
       if (user.stop != index) :
         continue # only search for the current stop
       if user not in stop.user_list :  # if not queueing
         x.append(user.enqueue_time)
+        z.append(user.waiting_num_bus)
         y.append(user.waiting_time)
         if (user.waiting_time != 0) :
           ax.axline((user.enqueue_time, user.waiting_time), slope=-1, lw=.5)
     ax.scatter(x, y, s=10)
+    # ax.plot(x, z)
     ax.set_xlabel('time')
     ax.set_ylabel('waiting time')
     ax.set_title(index)
     ax.set_xlim(0, MAX_TIME+1)
+    # ax.axhline(BUS_CYCLE, color='green', linestyle=':')
     # for leave_time in stop.leave_time_list :  # to show when the bus leave
     #   ax.axvline(leave_time, color='red', linestyle='--')
 
