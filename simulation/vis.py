@@ -22,7 +22,7 @@ def con_excel() :
   return wb
 
 def des_excel(wb) :
-  timestamp = datetime.now().strftime("%m%d-%H%M%S")
+  timestamp = datetime.now().strftime("%m%d-%H%M")
   try :
     os.mkdir("excel")
   except :
@@ -56,17 +56,24 @@ def plt_waiting_time() :
     index = Stop.list_obj.index(stop)
     x = []
     y = []
+    ax = axes[index]
     for user in User.list_obj :
       if (user.stop != index) :
         continue # only search for the current stop
       if user not in stop.user_list :  # if not queueing
         x.append(user.enqueue_time)
         y.append(user.waiting_time)
-    axes[index].scatter(x, y, s=10)
-    axes[index].set_xlabel('time')
-    axes[index].set_ylabel('waiting time')
-    axes[index].set_title(index)
-    axes[index].set_xlim(0, MAX_TIME+1)
+        if (user.waiting_time != 0) :
+          ax.axline((user.enqueue_time, user.waiting_time), slope=-1, lw=.5)
+    ax.scatter(x, y, s=10)
+    ax.set_xlabel('time')
+    ax.set_ylabel('waiting time')
+    ax.set_title(index)
+    ax.set_xlim(0, MAX_TIME+1)
+    # for leave_time in stop.leave_time_list :  # to show when the bus leave
+    #   ax.axvline(leave_time, color='red', linestyle='--')
 
   plt.tight_layout()
+  timestamp = datetime.now().strftime("%m%d-%H%M")
+  plt.savefig(f'excel/{timestamp}.png')
   plt.show()
