@@ -2,6 +2,7 @@ from elements import *
 import openpyxl as xl # openpyxl
 from datetime import datetime
 import os
+import matplotlib.pyplot as plt # matplotlib
 
 ### const ###
 
@@ -46,3 +47,26 @@ def to_excel_waiting(wb) :
     ws = wb[str(Stop.list_obj.index(stop))]
     for user in stop.user_list :
       ws.cell(row = user.enqueue_time + 2, column = 4).value = None
+
+def plt_waiting_time() :
+  fig, axes = plt.subplots(3, 2)
+  axes = axes.flatten()
+
+  for stop in Stop.list_obj[:-1] :
+    index = Stop.list_obj.index(stop)
+    x = []
+    y = []
+    for user in User.list_obj :
+      if (user.stop != index) :
+        continue # only search for the current stop
+      if user not in stop.user_list :  # if not queueing
+        x.append(user.enqueue_time)
+        y.append(user.waiting_time)
+    axes[index].scatter(x, y, s=10)
+    axes[index].set_xlabel('time')
+    axes[index].set_ylabel('waiting time')
+    axes[index].set_title(index)
+    axes[index].set_xlim(0, MAX_TIME+1)
+
+  plt.tight_layout()
+  plt.show()

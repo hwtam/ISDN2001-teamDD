@@ -2,7 +2,7 @@ import random
 
 ### const ###
 BUS_CYCLE = 7*60
-MAX_TIME = 9000
+MAX_TIME = 3000
 
 ### functions ###
 def getRandom(p) -> int :
@@ -20,11 +20,13 @@ def loop(t) :
       bus.get_on(Stop.list_obj[0])  # direct get on the bus
       if (t % BUS_CYCLE == 0) or (bus.ppl == bus.capacity) :  # if full or next bus arrive
         bus.position = 1  # start moving
+        Stop.list_obj[0].leave_time_list.append(t)
       continue
     elif bus.position in Stop.list_location[1:] :  # if bus at bus stop
       i = Stop.list_location.index(bus.position)
       bus.get_off(Stop.list_obj[i])
       bus.get_on(Stop.list_obj[i])
+      Stop.list_obj[i].leave_time_list.append(t)
 
     bus.position += 1  # move, for every bus
     if bus.position > Stop.list_location[-1] :  # after arrive last stop
@@ -77,6 +79,7 @@ class Stop :
     self.P_queue = P_queue/10  # P(how many ppl get in the queue per time)/1000
     self.P_off = P_off  # P(how many ppl get off the minibus per people in bus)/100
     self.user_list = []  # a list to store the people waiting at the queue
+    self.leave_time_list = []  # list to store the time when a bus leave the stop
     self.current_on = 0  # amount of people getting on the bus
     Stop.list_obj.append(self)
     Stop.list_location.append(location)
