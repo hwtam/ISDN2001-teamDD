@@ -1,6 +1,7 @@
 import_string = \
 '''
 import openpyxl as xl # openpyxl
+import matplotlib.pyplot as plt # matplotlib
 '''
 ### LINK START! (https://github.com/evnchn/linkstart.py)
 for line in import_string.splitlines():
