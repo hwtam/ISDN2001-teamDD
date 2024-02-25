@@ -56,5 +56,5 @@ for time in range(MAX_TIME + 1) :
 
 vis.to_excel_waiting(wb)
 vis.des_excel(wb)
-vis.plt_waiting_time()
+# vis.plt_waiting_time()
 print("\nSimulation finished")

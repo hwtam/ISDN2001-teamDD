@@ -85,25 +85,25 @@ def plt_waiting_time() :
   plt.savefig(f'excel/{timestamp}.png')
   plt.show()
 
-def is_fit(m, c, x, y) -> bool :  # see if the point(user) on the line of y=mx+c 
-  return (y == m * x + c)
-
-def next_x(x, arr) -> int : # return the smallest element that is larger than x
-  for ele in arr :  # arr is sorted
-    if ele > x :
-      return ele
-  return -1
-
-def next_leave_time_diff(next_leave, leave_time) -> int :  # return the diff time of next leave time and the prev leave time
-  index = leave_time.index(next_leave) -1
-  if (index == -1) :
-    return next_leave  # next_leave - 0
-  else :
-    return next_leave - leave_time[index]
-
-
 ##### not yet done
-#
+
+# def is_fit(m, c, x, y) -> bool :  # see if the point(user) on the line of y=mx+c 
+#   return (y == m * x + c)
+
+# def next_x(x, arr) -> int : # return the smallest element that is larger than x
+#   for ele in arr :  # arr is sorted
+#     if ele > x :
+#       return ele
+#   return -1
+
+# def next_leave_time_diff(next_leave, leave_time) -> int :  # return the diff time of next leave time and the prev leave time
+#   index = leave_time.index(next_leave) -1
+#   if (index == -1) :
+#     return next_leave  # next_leave - 0
+#   else :
+#     return next_leave - leave_time[index]
+
+
 # def add_line(ax, x1, y1, waiting_time, enqueue_time, leave_time) -> None : # add a line for stops except the first stop
 #   if (y1 == 0) :
 #     m = 0
@@ -145,5 +145,5 @@ def next_leave_time_diff(next_leave, leave_time) -> int :  # return the diff tim
 #         ax.plot([x, x+1], [y2, y3], lw=.5)  # line of the increase
 #         add_line(ax, x+1, y3, waiting_time, enqueue_time, leave_time)
 #         return
-#
+
 ##### not yet done
