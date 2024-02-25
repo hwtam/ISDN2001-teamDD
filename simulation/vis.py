@@ -101,48 +101,49 @@ def next_leave_time_diff(next_leave, leave_time) -> int :  # return the diff tim
   else :
     return next_leave - leave_time[index]
 
-def add_line(ax, x1, y1, waiting_time, enqueue_time, leave_time) -> None : # add a line for stops except the first stop
-  if (y1 == 0) :
-    m = 0
-  else :
-    m = -1
-  c = y1 - m * x1  # y=mx+c
 
-  x = x1
-  next_leave = next_x(x1, leave_time)
-  while (True) :
-    next_enqueue = next_x(x, enqueue_time)
-    if (next_enqueue == -1) :  # end at the last enqueue
-      ax.plot([x1, next_enqueue], [y1, m * next_enqueue + c], lw=.5)
-      return
+##### not yet done
+#
+# def add_line(ax, x1, y1, waiting_time, enqueue_time, leave_time) -> None : # add a line for stops except the first stop
+#   if (y1 == 0) :
+#     m = 0
+#   else :
+#     m = -1
+#   c = y1 - m * x1  # y=mx+c
+
+#   x = x1
+#   next_leave = next_x(x1, leave_time)
+#   while (True) :
+#     next_enqueue = next_x(x, enqueue_time)
+#     if (next_enqueue == -1) :  # end at the last enqueue
+#       ax.plot([x1, next_enqueue], [y1, m * next_enqueue + c], lw=.5)
+#       return
     
 
-    elif (not is_fit(m, c, next_enqueue, next_waiting)) :
-        x = next_enqueue
+#     elif (not is_fit(m, c, next_enqueue, next_waiting)) :
+#         x = next_enqueue
 
 
 
-    elif (next_leave < next_enqueue) :  # inc when meets the next leave time
-      x2 = next_leave
-      y2 = m * x2 + c
-      ax.plot([x1, x2-1], [y1, y2], lw=.5)  # line stops just before the bus leave
-      y3 = next_leave_time_diff(next_leave, leave_time)
-      ax.plot([x2-1, x2], [y2, y3], lw=.5)  # line of the increase
-      add_line(ax, x2, y3, waiting_time, enqueue_time, leave_time)
-      return
+#     elif (next_leave < next_enqueue) :  # inc when meets the next leave time
+#       x2 = next_leave
+#       y2 = m * x2 + c
+#       ax.plot([x1, x2-1], [y1, y2], lw=.5)  # line stops just before the bus leave
+#       y3 = next_leave_time_diff(next_leave, leave_time)
+#       ax.plot([x2-1, x2], [y2, y3], lw=.5)  # line of the increase
+#       add_line(ax, x2, y3, waiting_time, enqueue_time, leave_time)
+#       return
     
-    else :  # a person enqueue before the bus arrive
-      next_waiting = waiting_time[enqueue_time.index(next_enqueue)]
-      if (is_fit(m, c, next_enqueue, next_waiting)) :
-        x = next_enqueue
-      else :  # inc when the next user gets on the other bus
-        y2 = waiting_time[enqueue_time.index(x)]
-        ax.plot([x1, x], [y1, y2], lw=.5)  # line stops at last person enqueue for that bus
-        y3 = next_leave_time_diff(next_leave, leave_time)
-        ax.plot([x, x+1], [y2, y3], lw=.5)  # line of the increase
-        add_line(ax, x+1, y3, waiting_time, enqueue_time, leave_time)
-        return
-
-
-
-
+#     else :  # a person enqueue before the bus arrive
+#       next_waiting = waiting_time[enqueue_time.index(next_enqueue)]
+#       if (is_fit(m, c, next_enqueue, next_waiting)) :
+#         x = next_enqueue
+#       else :  # inc when the next user gets on the other bus
+#         y2 = waiting_time[enqueue_time.index(x)]
+#         ax.plot([x1, x], [y1, y2], lw=.5)  # line stops at last person enqueue for that bus
+#         y3 = next_leave_time_diff(next_leave, leave_time)
+#         ax.plot([x, x+1], [y2, y3], lw=.5)  # line of the increase
+#         add_line(ax, x+1, y3, waiting_time, enqueue_time, leave_time)
+#         return
+#
+##### not yet done

@@ -20,6 +20,7 @@ def loop(t) :
       bus.get_on(Stop.list_obj[0])  # direct get on the bus
       if (t % BUS_CYCLE == 0) or (bus.ppl == bus.capacity) :  # if full or next bus arrive
         bus.position = 1  # start moving
+        bus.ppl_list.append(bus.ppl)
         Stop.list_obj[0].leave_time_list.append(t)
         Stop.list_obj[0].update_waiting_num_bus()
       continue
@@ -27,6 +28,7 @@ def loop(t) :
       i = Stop.list_location.index(bus.position)
       bus.get_off(Stop.list_obj[i])
       bus.get_on(Stop.list_obj[i])
+      bus.ppl_list.append(bus.ppl)
       Stop.list_obj[i].leave_time_list.append(t)
       Stop.list_obj[i].update_waiting_num_bus()
 
@@ -48,6 +50,7 @@ class Bus :  # simplify "minibus" to "bus"
     self.ppl = 0  # how many ppl inside the bus
     self.position = 0  # current position of the bus
     self.capacity = capacity
+    self.ppl_list = []  # store the amount of ppl in the bus after the bus leave the stop
     Bus.list_obj.append(self)
 
   def get_on(self, stop) -> int:
