@@ -3,11 +3,9 @@ import openpyxl as xl # openpyxl
 from datetime import datetime
 import os
 import matplotlib.pyplot as plt # matplotlib
-
-### const ###
+import numpy as np # numpy
 
 ### functions ###
-
 def add_header(ws) :
   ws.append(["time", "people at queue", "people get on the bus", "waiting time"])
 
@@ -64,7 +62,7 @@ def plt_waiting_time() :
         continue # only search for the current stop
       if user not in stop.user_list :  # if not queueing
         x.append(user.enqueue_time)
-        z.append(user.waiting_num_bus)
+        # z.append(user.waiting_num_bus)
         y.append(user.waiting_time)
         if (user.waiting_time != 0) :
           ax.axline((user.enqueue_time, user.waiting_time), slope=-1, lw=.5)
@@ -74,11 +72,77 @@ def plt_waiting_time() :
     ax.set_ylabel('waiting time')
     ax.set_title(index)
     ax.set_xlim(0, MAX_TIME+1)
-    # ax.axhline(BUS_CYCLE, color='green', linestyle=':')
-    # for leave_time in stop.leave_time_list :  # to show when the bus leave
-    #   ax.axvline(leave_time, color='red', linestyle='--')
+    ax.set_ylim(0, max(BUS_CYCLE + 50, np.max(y)))
+    t = 0
+    for leave_time in stop.leave_time_list :  # to show when the bus leave
+      ax.axvline(leave_time, color='red', linestyle='--')
+      y = leave_time - t
+      ax.plot((t, leave_time), (y, y), color='green', linestyle=':')
+      t = leave_time
 
   plt.tight_layout()
   timestamp = datetime.now().strftime("%m%d-%H%M")
   plt.savefig(f'excel/{timestamp}.png')
   plt.show()
+
+def is_fit(m, c, x, y) -> bool :  # see if the point(user) on the line of y=mx+c 
+  return (y == m * x + c)
+
+def next_x(x, arr) -> int : # return the smallest element that is larger than x
+  for ele in arr :  # arr is sorted
+    if ele > x :
+      return ele
+  return -1
+
+def next_leave_time_diff(next_leave, leave_time) -> int :  # return the diff time of next leave time and the prev leave time
+  index = leave_time.index(next_leave) -1
+  if (index == -1) :
+    return next_leave  # next_leave - 0
+  else :
+    return next_leave - leave_time[index]
+
+def add_line(ax, x1, y1, waiting_time, enqueue_time, leave_time) -> None : # add a line for stops except the first stop
+  if (y1 == 0) :
+    m = 0
+  else :
+    m = -1
+  c = y1 - m * x1  # y=mx+c
+
+  x = x1
+  next_leave = next_x(x1, leave_time)
+  while (True) :
+    next_enqueue = next_x(x, enqueue_time)
+    if (next_enqueue == -1) :  # end at the last enqueue
+      ax.plot([x1, next_enqueue], [y1, m * next_enqueue + c], lw=.5)
+      return
+    
+
+    elif (not is_fit(m, c, next_enqueue, next_waiting)) :
+        x = next_enqueue
+
+
+
+    elif (next_leave < next_enqueue) :  # inc when meets the next leave time
+      x2 = next_leave
+      y2 = m * x2 + c
+      ax.plot([x1, x2-1], [y1, y2], lw=.5)  # line stops just before the bus leave
+      y3 = next_leave_time_diff(next_leave, leave_time)
+      ax.plot([x2-1, x2], [y2, y3], lw=.5)  # line of the increase
+      add_line(ax, x2, y3, waiting_time, enqueue_time, leave_time)
+      return
+    
+    else :  # a person enqueue before the bus arrive
+      next_waiting = waiting_time[enqueue_time.index(next_enqueue)]
+      if (is_fit(m, c, next_enqueue, next_waiting)) :
+        x = next_enqueue
+      else :  # inc when the next user gets on the other bus
+        y2 = waiting_time[enqueue_time.index(x)]
+        ax.plot([x1, x], [y1, y2], lw=.5)  # line stops at last person enqueue for that bus
+        y3 = next_leave_time_diff(next_leave, leave_time)
+        ax.plot([x, x+1], [y2, y3], lw=.5)  # line of the increase
+        add_line(ax, x+1, y3, waiting_time, enqueue_time, leave_time)
+        return
+
+
+
+

@@ -65,6 +65,7 @@ class Bus :  # simplify "minibus" to "bus"
     for i in range(self.ppl) :
       off += getRandom(stop.P_off)
     self.ppl -= off
+    stop.leave_ppl_list.append(off)
     return off
 
   def end(self) -> bool:
@@ -82,6 +83,7 @@ class Stop :
     self.P_off = P_off  # P(how many ppl get off the minibus per people in bus)/100
     self.user_list = []  # a list to store the people waiting at the queue
     self.leave_time_list = []  # list to store the time when a bus leave the stop
+    self.leave_ppl_list = []  # list to store the amount of ppl when a bus leave the stop
     self.current_on = 0  # amount of people getting on the bus
     Stop.list_obj.append(self)
     Stop.list_location.append(location)
