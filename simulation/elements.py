@@ -35,7 +35,7 @@ def loop(t) :
     bus.position += 1  # move, for every bus
     if bus.position > Stop.list_location[-1] :  # after arrive last stop
       bus.position = -1
-  
+
   if (t % BUS_CYCLE == 0) :  # start a new bus for each bus_cycle
     Bus()
   for stop in Stop.list_obj :

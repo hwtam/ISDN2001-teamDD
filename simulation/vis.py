@@ -64,8 +64,8 @@ def plt_waiting_time() :
         x.append(user.enqueue_time)
         # z.append(user.waiting_num_bus)
         y.append(user.waiting_time)
-        if (user.waiting_time != 0) :
-          ax.axline((user.enqueue_time, user.waiting_time), slope=-1, lw=.5)
+        # if (user.waiting_time != 0) :
+          # ax.axline((user.enqueue_time, user.waiting_time), slope=-1, lw=.5)
     ax.scatter(x, y, s=10)
     # ax.plot(x, z)
     ax.set_xlabel('time')
@@ -75,9 +75,9 @@ def plt_waiting_time() :
     ax.set_ylim(0, max(BUS_CYCLE + 50, np.max(y)))
     t = 0
     for leave_time in stop.leave_time_list :  # to show when the bus leave
-      ax.axvline(leave_time, color='red', linestyle='--')
+      # ax.axvline(leave_time, color='red', linestyle='--')
       y = leave_time - t
-      ax.plot((t, leave_time), (y, y), color='green', linestyle=':')
+      # ax.plot((t, leave_time), (y, y), color='green', linestyle=':')
       t = leave_time
 
   plt.tight_layout()
