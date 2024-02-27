@@ -8,17 +8,10 @@ path = os.path.dirname(__file__)
 os.chdir(path)
 timestamp = datetime.now().strftime("%m%d-%H%M%S")
 stops = []
+buses = []
 
 def init() -> None :
-  try :
-    os.mkdir("csv")
-  except :
-    pass
-
-  try :
-    os.mkdir(f"csv/{timestamp}")
-  except :
-    pass
+  os.makedirs(f"csv/{timestamp}", exist_ok=True)
 
 def save() -> None :
   columns = ["time"] + list(range(len(Stop.list_obj[:-1])))
