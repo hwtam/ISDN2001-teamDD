@@ -26,5 +26,5 @@ def append_queue(t) -> None :  # append a new row to store the queue at time t
   arr.insert(0, t)
   stops.append(arr)
 
-def append_bus(t) :
+def append_bus(t) :  # append a new row to store the bus at time t when bus arrive the stop
   pass
