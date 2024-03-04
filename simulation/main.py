@@ -38,15 +38,6 @@ import subprocess
 path = os.path.dirname(__file__)
 os.chdir(path)
 
-# init the bus stop (location, P_queue, P_off)
-Stop(0, 50, 0) # start , most ppl get in, 0 ppl get off
-Stop(90, 7.5, 20) # 1
-Stop(318, 10, 35) # 2
-Stop(366, 7.5, 10) # 3
-Stop(404, 7, 20) # 4
-Stop(488, 5, 30) # 5
-Stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
-
 makefile.init()
 
 ### simulation ###

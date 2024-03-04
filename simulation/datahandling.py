@@ -21,11 +21,17 @@ def getStop() -> pd.DataFrame:
   return df
 
 def handleStop_init() -> None:  # init the stop
-  df = pd.DataFrame(columns=list(range(len(Stop.list_obj[:-1]))))
-  try :
-    df.loc[0] = 0  # try to set the first row to 0
-  except :
-    pass
+  # init the bus stop (location, P_queue, P_off)
+  Stop(0, 50, 0) # start , most ppl get in, 0 ppl get off
+  Stop(90, 7.5, 20) # 1
+  Stop(318, 10, 35) # 2
+  Stop(366, 7.5, 10) # 3
+  Stop(404, 7, 20) # 4
+  Stop(488, 5, 30) # 5
+  Stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
+
+  df = pd.DataFrame(np.zeros((1,len(Stop.list_obj[:-1])), dtype=np.int8),
+                    columns=list(range(len(Stop.list_obj[:-1]))))
   saveStop(df)
 
 def handleBus_init() -> None:  # init the bus
@@ -43,7 +49,7 @@ def saveBus(df) -> None:
   df.to_csv(file_bus, index=False)
 
 def saveStop(df) -> None:
-  df.to_json(file_stop)
+  df.to_json(file_stop, orient='records')
 
 def handleBus_ppl(id:int, change:int) -> None:  # change the amount of ppl in the bus
   df = getBus()
