@@ -1,8 +1,7 @@
 import_string = \
 '''
-import openpyxl as xl # openpyxl
-import matplotlib.pyplot as plt # matplotlib
-import numpy as np # numpy
+import numpy as np
+import pandas as pd
 '''
 ### LINK START! (https://github.com/evnchn/linkstart.py)
 for line in import_string.splitlines():
@@ -30,10 +29,10 @@ for line in import_string.splitlines():
                 print("Failed to install {}".format(package_name))
 ### DONE
 from elements import *  # self-define
-import vis  # self-define
+import makefile  # self-define
 import os
 import subprocess
-import makecsv
+
 
 ### init ###
 path = os.path.dirname(__file__)
@@ -48,16 +47,11 @@ Stop(404, 7, 20) # 4
 Stop(488, 5, 30) # 5
 Stop(553, 0, 100) # end , 0 ppl get in, all ppl get off
 
-wb = vis.con_excel()
-makecsv.init()
+makefile.init()
 
 ### simulation ###
 for time in range(MAX_TIME + 1) :
   loop(time)
-  vis.to_excel_ppl(wb, time)
-  makecsv.append_queue(time)
+  makefile.append_queue(time)
 
-makecsv.save()
-vis.to_excel_waiting(wb)
-vis.des_excel(wb)
-vis.plt_waiting_time()
+makefile.save()
