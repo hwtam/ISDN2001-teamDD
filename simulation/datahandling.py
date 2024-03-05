@@ -79,6 +79,7 @@ def handleBus_ppl(id:int, change:int, time:int) -> None:  # change the amount of
   saveBus(df)
   record_bus(time)
 
+
 def handleBus_state(id:int, time:int) -> None:  # change the state of the bus
   df = getBus()
   if id in df['id'].values :

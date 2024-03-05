@@ -30,6 +30,7 @@ for line in import_string.splitlines():
 ### DONE
 from elements import *  # self-define
 import datahandling  # self-define
+import mytk  # self-define
 import os
 
 ### init ###
@@ -48,6 +49,7 @@ datahandling.init()
 
 ### simulation ###
 for time in range(MAX_TIME + 1) :
-  if (time % 100 == 0) :
-    print(f"{time = }")
+#   if (time % 100 == 0) :  # show the progress
+#     print(f"{time = }")
   loop(time)
+  mytk.update(time)
