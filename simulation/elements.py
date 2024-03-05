@@ -12,26 +12,27 @@ def getRandom(p) -> int :
 
 def loop(t) :
   for stop in Stop.list_obj :  # handle the queue
-    stop.renege()
+    stop.renege(t)
     stop.enqueue(t)
 
   for bus in Bus.list_obj :  # handle buses
     if (bus.end()) :
       continue
     elif (bus.position == 0) :  # waiting for start
-      bus.get_on(Stop.list_obj[0])  # direct get on the bus
+      bus.get_on(Stop.list_obj[0], t)  # direct get on the bus
       if (t % BUS_CYCLE == 0) or (bus.ppl == bus.capacity) :  # if full or next bus arrive
         bus.position = 1  # start moving
         bus.ppl_list.append(bus.ppl)
+        datahandling.handleBus_state(Bus.list_obj.index(bus), t)
         Stop.list_obj[0].leave_time_list.append(t)
         Stop.list_obj[0].update_waiting_num_bus()
       continue
     elif bus.position in Stop.list_location[1:] :  # if bus at bus stop
       i = Stop.list_location.index(bus.position)
-      bus.get_off(Stop.list_obj[i])
-      bus.get_on(Stop.list_obj[i])
+      bus.get_off(Stop.list_obj[i], t)
+      bus.get_on(Stop.list_obj[i], t)
       bus.ppl_list.append(bus.ppl)
-      datahandling.handleBus_state(Bus.list_obj.index(bus))
+      datahandling.handleBus_state(Bus.list_obj.index(bus), t)
       Stop.list_obj[i].leave_time_list.append(t)
       Stop.list_obj[i].update_waiting_num_bus()
 
@@ -56,7 +57,7 @@ class Bus :  # simplify "minibus" to "bus"
     self.ppl_list = []  # store the amount of ppl in the bus after the bus leave the stop
     Bus.list_obj.append(self)
 
-  def get_on(self, stop) -> int:
+  def get_on(self, stop, t) -> int:
     on = self.capacity - self.ppl
     if on > len(stop.user_list) :
       on = len(stop.user_list)
@@ -64,16 +65,16 @@ class Bus :  # simplify "minibus" to "bus"
     for i in range(on) :
       stop.dequeue()
     stop.current_on = on
-    datahandling.handleBus_ppl(Bus.list_obj.index(self), on)
+    datahandling.handleBus_ppl(Bus.list_obj.index(self), on, t)
     return on
 
-  def get_off(self, stop) -> int :
+  def get_off(self, stop, t) -> int :
     off = 0
     for i in range(self.ppl) :
       off += getRandom(stop.P_off)
     self.ppl -= off
     stop.leave_ppl_list.append(off)
-    datahandling.handleBus_ppl(Bus.list_obj.index(self), -off)
+    datahandling.handleBus_ppl(Bus.list_obj.index(self), -off, t)
     return off
 
   def end(self) -> bool:
@@ -99,18 +100,18 @@ class Stop :
   def enqueue(self, t) -> int :  # enqueue with given P
     if (getRandom(self.P_queue)) :
       self.user_list.append(User(Stop.list_obj.index(self), t))
-      datahandling.handleStop_ppl(Stop.list_obj.index(self), 1)
+      datahandling.handleStop_ppl(Stop.list_obj.index(self), 1, t)
       return 1
     return 0
   
-  def renege(self) -> int :  # dequeue without getting on the bus
+  def renege(self, t) -> int :  # dequeue without getting on the bus
     count = 0
     if (Stop.P_leave > 0) :
       for person in self.user_list :
         if (getRandom(Stop.P_leave)) :
           count += 1
           self.dequeue(person)
-      datahandling.handleStop_ppl(Stop.list_obj.index(self), -count)
+      datahandling.handleStop_ppl(Stop.list_obj.index(self), -count, t)
     return count
   
   def dequeue(self, person = None) -> None :  # dequeue
