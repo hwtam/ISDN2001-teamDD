@@ -1,4 +1,6 @@
 import random
+import datarecording  # self-defined module
+import datahandling  # self-defined module
 
 ### const ###
 BUS_CYCLE = 7*60
@@ -29,6 +31,7 @@ def loop(t) :
       bus.get_off(Stop.list_obj[i])
       bus.get_on(Stop.list_obj[i])
       bus.ppl_list.append(bus.ppl)
+      datarecording.recordBus_state(Bus.list_obj.index(bus))
       Stop.list_obj[i].leave_time_list.append(t)
       Stop.list_obj[i].update_waiting_num_bus()
 
@@ -61,6 +64,7 @@ class Bus :  # simplify "minibus" to "bus"
     for i in range(on) :
       stop.dequeue()
     stop.current_on = on
+    datarecording.recordBus_ppl(Bus.list_obj.index(self), on)
     return on
 
   def get_off(self, stop) -> int :
@@ -69,6 +73,7 @@ class Bus :  # simplify "minibus" to "bus"
       off += getRandom(stop.P_off)
     self.ppl -= off
     stop.leave_ppl_list.append(off)
+    datarecording.recordBus_ppl(Bus.list_obj.index(self), -off)
     return off
 
   def end(self) -> bool:
@@ -94,6 +99,7 @@ class Stop :
   def enqueue(self, t) -> int :  # enqueue with given P
     if (getRandom(self.P_queue)) :
       self.user_list.append(User(Stop.list_obj.index(self), t))
+      datarecording.recordStop_ppl(Stop.list_obj.index(self), 1)
       return 1
     return 0
   
@@ -104,6 +110,7 @@ class Stop :
         if (getRandom(Stop.P_leave)) :
           count += 1
           self.dequeue(person)
+      datarecording.recordStop_ppl(Stop.list_obj.index(self), -count)
     return count
   
   def dequeue(self, person = None) -> None :  # dequeue

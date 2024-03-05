@@ -29,20 +29,15 @@ for line in import_string.splitlines():
                 print("Failed to install {}".format(package_name))
 ### DONE
 from elements import *  # self-define
-import makefile  # self-define
+import datahandling  # self-define
 import os
-import subprocess
-
 
 ### init ###
 path = os.path.dirname(__file__)
 os.chdir(path)
 
-makefile.init()
+datahandling.init()
 
 ### simulation ###
 for time in range(MAX_TIME + 1) :
   loop(time)
-  makefile.append_queue(time)
-
-makefile.save()

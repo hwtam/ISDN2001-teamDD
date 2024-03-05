@@ -45,10 +45,10 @@ def init() -> None:  # init all stuff
   handleStop_init()
   handleBus_init()
 
-def saveBus(df) -> None:
+def saveBus(df:pd.DataFrame) -> None:
   df.to_csv(file_bus, index=False)
 
-def saveStop(df) -> None:
+def saveStop(df:pd.DataFrame) -> None:
   df.to_json(file_stop, orient='records')
 
 def handleBus_ppl(id:int, change:int) -> None:  # change the amount of ppl in the bus
