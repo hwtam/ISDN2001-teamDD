@@ -3,11 +3,9 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 import os
-import pandas as pd
-
 
 ### changeable parameters ###
-record : bool = True
+record : bool = True  # record mode
 ### changeable parameters ###
 
 timestamp = datetime.now().strftime("%m%d-%H%M%S")
@@ -16,14 +14,7 @@ file_stop = f"asset/{timestamp}/stop.json"
 file_record_bus = f"asset/{timestamp}/record_bus.csv"
 file_record_stop = f"asset/{timestamp}/record_stop.json"
 
-
-def getValue(df:pd.DataFrame, col:str) -> int:
-  return df[col].values[0]
-
-def setValue(df:pd.DataFrame, col:str, change:int) -> None:
-  df.loc[0][col] += change
-
-def getBus(b = False) -> pd.DataFrame:
+def getBus(b = False) -> pd.DataFrame:  # getBus(True) to get the record
   path = os.path.dirname(__file__)
   os.chdir(path)
   if b :
@@ -32,7 +23,7 @@ def getBus(b = False) -> pd.DataFrame:
     df = pd.read_csv(file_bus)
   return df
 
-def getStop(b = False) -> pd.DataFrame:
+def getStop(b = False) -> pd.DataFrame:  # getStop(True) to get the record
   path = os.path.dirname(__file__)
   os.chdir(path)
   if b :
@@ -46,7 +37,7 @@ def handleStop_init() -> None:  # init the stop
                     columns=["Stop" + str(i) for i in range(len(elements.Stop.list_obj[:-1]))])
   saveStop(df)
   if record :
-    pd.DataFrame(np.zeros((1, len(elements.Stop.list_obj[:-1])+1), dtype=np.int8),
+    df = pd.DataFrame(np.zeros((1, len(elements.Stop.list_obj[:-1])+1), dtype=np.int8),
                  columns=["Time"] + ["Stop" + str(i) for i in range(len(elements.Stop.list_obj[:-1]))])
     saveStop(df, True)
 
@@ -86,12 +77,7 @@ def handleBus_ppl(id:int, change:int, time:int) -> None:  # change the amount of
     row = pd.DataFrame([[id, change, 0]], columns=['id', 'ppl', 'state'])
     df = pd.concat([df, row])
   saveBus(df)
-  if record :
-    df_record = getBus(True)
-    temp = df.tail(1).copy()
-    temp.insert(0, "time", time)
-    df_record = pd.concat([df_record, temp])
-    saveBus(df_record, True)
+  record_bus(time)
 
 def handleBus_state(id:int, time:int) -> None:  # change the state of the bus
   df = getBus()
@@ -101,20 +87,29 @@ def handleBus_state(id:int, time:int) -> None:  # change the state of the bus
     row = pd.DataFrame([[id, 0, 0]], columns=['id', 'ppl', 'state'])
     df = pd.concat([df, row])
   saveBus(df)
-  if record :
-    df_record = getBus(True)
-    temp = df.tail(1).copy()
-    temp.insert(0, "time", time)
-    df_record = pd.concat([df_record, temp])
-    saveBus(df_record, True)
+  record_bus(time)
 
 def handleStop_ppl(index:int, change:int, time:int) -> None:  # change the amount of ppl at the stop queue
   df = getStop()
   df.loc[0]["Stop" + str(index)] += change
   saveStop(df)
+  record_stop(time)
+
+def record_bus(t) -> None:  # record the bus state
   if record :
+    df = getBus()
+    df_record = getBus(True)
+    temp = df.tail(1).copy()
+    temp.insert(0, "time", t)
+    if (not temp.reset_index(drop=True).equals(df_record.tail(1).reset_index(drop=True))) :
+      df_record = pd.concat([df_record, temp])
+      saveBus(df_record, True)
+
+def record_stop(t) -> None:  # record the stop state
+  if record :
+    df = getStop()
     df_record = getStop(True)
     temp = df.tail(1).copy()
-    temp.insert(0, "Time", time)
+    temp.insert(0, "Time", t)
     df_record = pd.concat([df_record, temp])
     saveStop(df_record, True)

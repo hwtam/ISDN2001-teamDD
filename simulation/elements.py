@@ -1,5 +1,4 @@
 import random
-# import datarecording  # self-defined module
 import datahandling  # self-defined module
 
 ### const ###
@@ -8,6 +7,8 @@ MAX_TIME = 3000
 
 ### functions ###
 def getRandom(p) -> int :
+  if (p == 0) :
+    return 0
   return int(random.random() < (p / 100))  # 0 / 1
 
 def loop(t) :
@@ -58,6 +59,8 @@ class Bus :  # simplify "minibus" to "bus"
     Bus.list_obj.append(self)
 
   def get_on(self, stop, t) -> int:
+    if (Stop.list_obj[-1] == stop) :
+      return 0
     on = self.capacity - self.ppl
     if on > len(stop.user_list) :
       on = len(stop.user_list)
@@ -66,6 +69,7 @@ class Bus :  # simplify "minibus" to "bus"
       stop.dequeue()
     stop.current_on = on
     datahandling.handleBus_ppl(Bus.list_obj.index(self), on, t)
+    datahandling.handleStop_ppl(Stop.list_obj.index(stop), -on, t)
     return on
 
   def get_off(self, stop, t) -> int :
