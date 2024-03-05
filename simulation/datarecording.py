@@ -1,4 +1,4 @@
-from elements import *  # self-define
+import elements # self-define
 import datahandling  # self-define
 import pandas as pd
 import numpy as np
@@ -20,7 +20,8 @@ def getStop() -> pd.DataFrame:
   return df
 
 def handleStop_init() -> None:  # init the stop
-  df = pd.DataFrame(columns=list(range(len(Stop.list_obj[:-1]))))
+  df = pd.DataFrame(np.zeros((1, len(elements.Stop.list_obj[:-1])), dtype=np.int8),
+                           columns=["Stop" + str(i) for i in range(len(elements.Stop.list_obj[:-1]))])
   saveStop(df)
 
 def handleBus_init() -> None:  # init the bus
@@ -43,10 +44,12 @@ def recordBus_ppl(id:int, change:int) -> None:  # same as handleBus_ppl, but alw
   df = getBus()
   if any(df['id'] == id) :
     prev = df.loc[df['id'] == id]
-    row = pd.DataFrame([[id, prev['ppl'] + change, prev['state']]], columns=['id', 'ppl', 'state'])
+    row = pd.DataFrame([[id, prev['ppl'].values[0] + change, prev['state']]], columns=['id', 'ppl', 'state'])
   else :
     row = pd.DataFrame([[id, change, 0]], columns=['id', 'ppl', 'state'])
-  df = df.append(row)
+  print(1)
+  print(row)
+  df = pd.concat([df, row])
   saveBus(df)
 
 def recordBus_state(id:int) -> None:  # same as handleBus_state, but always new row
@@ -57,17 +60,15 @@ def recordBus_state(id:int) -> None:  # same as handleBus_state, but always new 
     row = pd.DataFrame([[id, prev['ppl'], prev['state'] + 1]], columns=['id', 'ppl', 'state'])
   else :
     row = pd.DataFrame([[id, 0, 0]], columns=['id', 'ppl', 'state'])
-  df = df.append(row)
+  print(2)
+  print(row)
+  df = pd.concat([df, row])
   saveBus(df)
 
 def recordStop_ppl(index:int, change:int) -> None:  # change the amount of ppl at the stop queue
   datahandling.handleStop_ppl(index, change)
   df = getStop()
-  try :
-    last_row = df.tail(1)
-    new_row = last_row.copy()
-  except :
-    new_row = pd.DataFrame(np.zeros((1,len(Stop.list_obj[:-1])), columns=list(range(len(Stop.list_obj[:-1])))))
-  new_row[index] += change
-  df = df.append(new_row)
+  new_row = df.tail(1).copy()
+  new_row.loc[0]["Stop" + str(index)] += change
+  df = pd.concat([df, new_row])
   saveStop(df)
