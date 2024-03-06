@@ -32,6 +32,7 @@ def getStop(b = False) -> pd.DataFrame:  # getStop(True) to get the record
     df = pd.read_json(file_stop)
   return df
 
+
 def handleStop_init() -> None:  # init the stop
   df = pd.DataFrame(np.zeros((1, len(elements.Stop.list_obj[:-1])), dtype=np.int8),
                     columns=["Stop" + str(i) for i in range(len(elements.Stop.list_obj[:-1]))])
@@ -55,6 +56,7 @@ def init() -> None:  # init all stuff
   handleStop_init()
   handleBus_init()
 
+
 def saveBus(df:pd.DataFrame, b = False) -> None:
   if b :
     df.to_csv(file_record_bus, index=False)
@@ -67,6 +69,7 @@ def saveStop(df:pd.DataFrame, b = False) -> None:
   else :
     df.to_json(file_stop, orient='records')
 
+
 def handleBus_ppl(id:int, change:int, time:int) -> None:  # change the amount of ppl in the bus
   if (change == 0) :
     return
@@ -78,7 +81,6 @@ def handleBus_ppl(id:int, change:int, time:int) -> None:  # change the amount of
     df = pd.concat([df, row])
   saveBus(df)
   record_bus(time)
-
 
 def handleBus_state(id:int, time:int) -> None:  # change the state of the bus
   df = getBus()
@@ -95,6 +97,7 @@ def handleStop_ppl(index:int, change:int, time:int) -> None:  # change the amoun
   df.loc[0]["Stop" + str(index)] += change
   saveStop(df)
   record_stop(time)
+
 
 def record_bus(t) -> None:  # record the bus state
   if record :

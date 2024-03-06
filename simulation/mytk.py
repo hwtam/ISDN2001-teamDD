@@ -54,6 +54,7 @@ class BusTable(tk.Tk):
       BusTable.obj = BusTable([])
     return BusTable.obj
 
+
 class StopTable(tk.Tk):
 
   obj = None
