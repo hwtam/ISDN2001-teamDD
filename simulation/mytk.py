@@ -52,7 +52,6 @@ class BusTable(tk.Tk):
   def getObj():
     if (BusTable.obj == None):
       BusTable.obj = BusTable([])
-      BusTable.obj.mainloop()
     return BusTable.obj
 
 class StopTable(tk.Tk):
@@ -87,8 +86,6 @@ class StopTable(tk.Tk):
       self.variables[name] = item_id
 
   def update_variable(self, name, ppl):
-    print(f"{name = }")
-    print(f"{ppl = }")
     # Update the value of a variable in the table
     item_id = self.variables.get(name)
     if not item_id:
@@ -99,7 +96,6 @@ class StopTable(tk.Tk):
   def getObj():
     if (StopTable.obj == None):
       StopTable.obj = StopTable(["Stop" + str(i) for i in range(len(elements.Stop.list_obj[:-1]))])
-      StopTable.obj.mainloop()
     return StopTable.obj
   
 ### functions ###
@@ -108,10 +104,13 @@ def update(t) :
     df = datahandling.getBus()
     for i in range(len(df)) :
       BusTable.getObj().update_variable(df.iloc[i]['id'], df.iloc[i]['ppl'], df.iloc[i]['state'])
-    df = datahandling.getStop()
-    for i in range(len(df)) :
-      StopTable.getObj().update_variable("Stop" + str(i), df.iloc[i].values[0])
+
+    data_dict = datahandling.getStop().to_dict(orient='records')[0]
+    for item, value in data_dict.items():
+      StopTable.getObj().update_variable(item, value)
     BusTable.getObj().update()
-    BusTable.getObj().after(1000)
     StopTable.getObj().update()
-    StopTable.getObj().after(1000)
+
+def mainloop() :
+  BusTable.getObj().mainloop()
+  StopTable.getObj().mainloop()
