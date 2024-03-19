@@ -49,8 +49,8 @@ datahandling.init()
 
 ### simulation ###
 for time in range(MAX_TIME + 1) :
-  if (time % 50 == 0) :  # show the progress
-    print(f"{time = }")
+#   if (time % 50 == 0) :  # show the progress
+#     print(f"{time = }")
   loop(time)
   mytk.update(time)
 mytk.mainloop()

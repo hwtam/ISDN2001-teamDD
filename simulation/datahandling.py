@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 
 ### changeable parameters ###
-record : bool = True  # record mode
+record : bool = False  # record mode
 ### changeable parameters ###
 
 timestamp = datetime.now().strftime("%m%d-%H%M%S")
@@ -14,6 +14,7 @@ file_stop = f"asset/{timestamp}/stop.json"
 file_record_bus = f"asset/{timestamp}/record_bus.csv"
 file_record_stop = f"asset/{timestamp}/record_stop.json"
 
+# get #
 def getBus(b = False) -> pd.DataFrame:  # getBus(True) to get the record
   path = os.path.dirname(__file__)
   os.chdir(path)
@@ -32,7 +33,7 @@ def getStop(b = False) -> pd.DataFrame:  # getStop(True) to get the record
     df = pd.read_json(file_stop)
   return df
 
-
+# init #
 def handleStop_init() -> None:  # init the stop
   df = pd.DataFrame(np.zeros((1, len(elements.Stop.list_obj[:-1])), dtype=np.int8),
                     columns=["Stop" + str(i) for i in range(len(elements.Stop.list_obj[:-1]))])
@@ -56,7 +57,7 @@ def init() -> None:  # init all stuff
   handleStop_init()
   handleBus_init()
 
-
+# save #
 def saveBus(df:pd.DataFrame, b = False) -> None:
   if b :
     df.to_csv(file_record_bus, index=False)
@@ -69,7 +70,7 @@ def saveStop(df:pd.DataFrame, b = False) -> None:
   else :
     df.to_json(file_stop, orient='records')
 
-
+# handle #
 def handleBus_ppl(id:int, change:int, time:int) -> None:  # change the amount of ppl in the bus
   if (change == 0) :
     return
@@ -93,13 +94,19 @@ def handleBus_state(id:int, time:int) -> None:  # change the state of the bus
     df = pd.concat([df, row])
   saveBus(df)
   record_bus(time)
+  if id in df['id'].values :
+    print(f"{time} - (Bus , {id}, {df.loc[df['id'] == id, 'ppl'].values[0]})")  # print the ppl (when change state)
+  else :
+    print(f"{time} - (Bus , {id}, 0)")  # print the ppl to 0 (when change state)
 
 def handleStop_ppl(index:int, change:int, time:int) -> None:  # change the amount of ppl at the stop queue
+  if (change == 0) :
+    return
   df = getStop()
   df.loc[0]["Stop" + str(index)] += change
   saveStop(df)
   record_stop(time)
-
+  print(f"{time} - (Stop , {index}, {change})")  # print the change of ppl (when hv changes)
 
 def record_bus(t) -> None:  # record the bus state
   if record :
