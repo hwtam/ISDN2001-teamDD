@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 
 ### changeable parameters ###
-record : bool = False  # record mode
+record : bool = True  # record mode
 ### changeable parameters ###
 
 timestamp = datetime.now().strftime("%m%d-%H%M%S")
@@ -86,6 +86,8 @@ def handleBus_state(id:int, time:int) -> None:  # change the state of the bus
   df = getBus()
   if id in df['id'].values :
     df.loc[df['id'] == id, 'state'] += 1
+    if any(df.loc[df['id'] == id, 'state'] == 7) :
+      df = df.drop(df[df['id'] == id].index)
   else :
     row = pd.DataFrame([[id, 0, 0]], columns=['id', 'ppl', 'state'])
     df = pd.concat([df, row])

@@ -53,7 +53,9 @@ class BusTable(tk.Tk):
     if (BusTable.obj == None):
       BusTable.obj = BusTable([])
     return BusTable.obj
-
+  
+  def getChildren():
+    return BusTable.getObj().tree.get_children()
 
 class StopTable(tk.Tk):
 
@@ -105,7 +107,8 @@ def update(t) :
     df = datahandling.getBus()
     for i in range(len(df)) :
       BusTable.getObj().update_variable(df.iloc[i]['id'], df.iloc[i]['ppl'], df.iloc[i]['state'])
-
+    if (len(df) < len(BusTable.getChildren())) :
+      BusTable.getObj().tree.delete(BusTable.getChildren()[0])
     data_dict = datahandling.getStop().to_dict(orient='records')[0]
     for item, value in data_dict.items():
       StopTable.getObj().update_variable(item, value)
