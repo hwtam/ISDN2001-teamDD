@@ -53,4 +53,5 @@ for time in range(MAX_TIME + 1) :
 #     print(f"{time = }")
   loop(time)
   mytk.update(time)
+print(f"\nSimulation finished!\n{MAX_TIME = }")
 mytk.mainloop()
