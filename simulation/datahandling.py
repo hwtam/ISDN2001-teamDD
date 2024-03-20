@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 
 ### changeable parameters ###
-record : bool = False  # record mode
+record : bool = True  # record mode
 ### changeable parameters ###
 
 timestamp = datetime.now().strftime("%m%d-%H%M%S")

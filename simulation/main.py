@@ -30,7 +30,7 @@ for line in import_string.splitlines():
 ### DONE
 from elements import *  # self-define
 import datahandling  # self-define
-import mytk  # self-define
+# import mytk  # self-define
 import os
 
 ### init ###
@@ -52,6 +52,6 @@ for time in range(MAX_TIME + 1) :
 #   if (time % 50 == 0) :  # show the progress
 #     print(f"{time = }")
   loop(time)
-  mytk.update(time)
+#   mytk.update(time)
 print(f"\nSimulation finished!\n{MAX_TIME = }")
-mytk.mainloop()
+# mytk.mainloop()
